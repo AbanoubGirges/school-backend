@@ -1,4 +1,4 @@
-import { prisma } from "../prisma/config/prismaConnection.ts";
+import { prisma } from "../config/prismaConnection.ts";
 import type { IUserDetails } from "../models/userData.ts";
 import type { IUser } from "../models/userData.ts";
 import type { Prisma } from "@prisma/client";
@@ -18,7 +18,7 @@ async function insertUser(user: IUserDetails): Promise<IUser> {
 
 async function fetchUserByUsername(
   username: string,
-): Promise<[IUser, string] | null> {
+): Promise<[IUser, string, string] | null> {
   const result = await prisma.user.findUnique({
     where: { userName: username },
     select: {
@@ -29,11 +29,12 @@ async function fetchUserByUsername(
       servantPrepYear: true,
       status: true,
       password: true,
+      pfpPath: true,
     },
   });
   if (!result) return null;
 
-  const { password, ...user } = result;
-  return [user as IUser, password];
+  const { password, pfpPath, ...user } = result;
+  return [user as IUser, password, pfpPath];
 }
 export { insertUser, fetchUserByUsername };

@@ -5,6 +5,7 @@ export interface IUser {
   gender: string;
   servantPrepYear: number;
   status?: string;
+  pfpUrl?: string;
 }
 export interface IUserDetails {
   id: string;
@@ -24,6 +25,5 @@ export interface IUserDetails {
   confessionFather: string;
   litrugyDate: Date;
   serviceType: string;
-  profilePicturePath: string;
+  pfpUrl?: string;
 }
-

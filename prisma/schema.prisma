@@ -9,6 +9,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  // @ts-ignore
+  url      = env("DATABASE_URL")
 }
 
 // user model
@@ -49,7 +51,6 @@ model User {
   servantPrepYear    Int
   serviceType        String
   registerDate       DateTime @default(now())
-  profilePicturePath String
   status             Status     @default(PENDING)
   attendances        Attendance[]
 }
@@ -68,4 +69,22 @@ model Attendance {
   status      AttendanceStatus
   user        User     @relation(fields: [userId], references: [id])
   excuse     String?
+}
+//lectures model
+model Lecture {
+  id          String   @id @default(uuid())
+  title       String
+  type        String
+  date        DateTime
+  path         String @unique
+  subject     Subject
+}
+//subjects enum
+enum Subject {
+  BIBLE
+  SERVICE_TOPICS
+  DOCTRINE
+  CHURCH_HISTORY
+  RITUALS
+  HYMNS
 }

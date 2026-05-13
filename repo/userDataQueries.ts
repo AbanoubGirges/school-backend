@@ -1,4 +1,4 @@
-import { prisma } from "../prisma/config/prismaConnection.ts";
+import { prisma } from "../config/prismaConnection.ts";
 import type { User } from "@prisma/client";
 
 async function fetchUserData(id: string): Promise<User | null> {
