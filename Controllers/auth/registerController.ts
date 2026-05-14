@@ -7,6 +7,7 @@ import type { IUser, IUserDetails } from "../../models/userData.ts";
 import { uploadPfp } from "../../services/supabase/uploadPfp.ts";
 import { deletePfp } from "../../services/supabase/uploadPfp.ts";
 import { v4 as uuidv4 } from "uuid";
+import { Prisma } from "@prisma/client";
 const registerController = async (
   req: express.Request,
   res: express.Response,
@@ -26,9 +27,9 @@ const registerController = async (
     const { pfpUrl } = uploaded;
     req.body.pfpUrl = pfpUrl;
   }
-  
+
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  
+
   const destructuredBody = {
     id: uuidv4(),
     userName: req.body.userName,
@@ -47,10 +48,7 @@ const registerController = async (
     litrugyDate: new Date(req.body.litrugyDate),
     servantPrepYear: parseInt(req.body.servantPrepYear, 10),
     serviceType: req.body.serviceType,
-    
   };
-  
-  console.log("Registering user with data:", destructuredBody);
 
   try {
     const userData: IUser | null = await insertUser(destructuredBody);
@@ -67,6 +65,18 @@ const registerController = async (
       );
     }
     console.error("Error registering user:", err);
+
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
+      const field = (err.meta?.target as string[])?.[0];
+      res.status(409).json({
+        error: `${field.replace(/[\\"]/g, "").toUpperCase()}_ALREADY_EXISTS`,
+      });
+      return;
+    }
+
     res.status(500).json({ message: "ERROR_REGISTERING_USER" });
   }
 };
