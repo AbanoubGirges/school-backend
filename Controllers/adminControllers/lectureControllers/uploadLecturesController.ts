@@ -15,9 +15,8 @@ const uploadLecturesController = async (
       title,
       subject,
       date,
-    }: { title: string; subject: string;  date: Date } =
-      req.body;
-    if (!title || !subject  || !date) {
+    }: { title: string; subject: string; date: Date } = req.body;
+    if (!title || !subject || !date) {
       res.status(400).json({ message: "MISSING_REQUIRED_FIELDS" });
       return;
     }
@@ -26,7 +25,7 @@ const uploadLecturesController = async (
       req.file.buffer,
       req.file.mimetype,
       lectureId,
-      subject.toUpperCase()
+      subject.toUpperCase(),
     );
     if (result instanceof Error || !result) {
       console.error("Error uploading lecture:", result);

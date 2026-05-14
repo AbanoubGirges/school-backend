@@ -8,6 +8,8 @@ const lecturesRouter = express.Router();
 lecturesRouter.post(
   "/",
   multerInstance.single("file"),
-  authAdmin,uploadLecturesController,
+  authAdmin,
+  uploadLecturesController,
 );
-lecturesRouter.get("/:subject",authUser ,getLecturesController);
+lecturesRouter.get("/:subject", authUser, getLecturesController);
+export default lecturesRouter;
