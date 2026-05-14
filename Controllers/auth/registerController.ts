@@ -26,10 +26,13 @@ const registerController = async (
     const { pfpUrl } = uploaded;
     req.body.pfpUrl = pfpUrl;
   }
+  
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  
   const destructuredBody = {
     id: uuidv4(),
     userName: req.body.userName,
-    password: req.body.password,
+    password: hashedPassword,
     name: req.body.name,
     gender: req.body.gender,
     birthdate: req.body.birthdate,
@@ -39,14 +42,15 @@ const registerController = async (
     homeNumber: req.body.homeNumber,
     schoolName: req.body.schoolName,
     eductaionType: req.body.eductaionType,
-    educationYear: req.body.educationYear,
+    educationYear: parseInt(req.body.educationYear, 10),
     confessionFather: req.body.confessionFather,
-    litrugyDate: req.body.litrugyDate,
-    servantPrepYear: req.body.servantPrepYear,
+    litrugyDate: new Date(req.body.litrugyDate),
+    servantPrepYear: parseInt(req.body.servantPrepYear, 10),
     serviceType: req.body.serviceType,
+    
   };
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  req.body.password = hashedPassword;
+  
+  console.log("Registering user with data:", destructuredBody);
 
   try {
     const userData: IUser | null = await insertUser(destructuredBody);
