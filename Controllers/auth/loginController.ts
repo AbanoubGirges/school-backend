@@ -16,7 +16,7 @@ const loginController = async (req: express.Request, res: express.Response) => {
       res.status(404).json({ message: "USER_NOT_FOUND" });
       return;
     }
-    const [userData, password, pfpPath] = result;
+    const [userData, password] = result;
     const isPasswordValid = await bcrypt.compare(req.body.password, password);
     if (!isPasswordValid) {
       res.status(404).json({ message: "INVALID_CREDENTIALS" });
@@ -25,7 +25,7 @@ const loginController = async (req: express.Request, res: express.Response) => {
       res.status(403).json({ message: `ACCOUNT_PENDING` });
       return;
     }
-    const pfpUrl = await getPfpUrl(pfpPath);
+    const pfpUrl = await getPfpUrl(userData.id);
     if (pfpUrl instanceof Error) {
       console.error("Error fetching profile picture URL:", pfpUrl);
       res.status(500).json({ message: "ERROR_FETCHING_PROFILE_PICTURE" });

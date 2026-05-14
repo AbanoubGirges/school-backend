@@ -18,7 +18,7 @@ async function insertUser(user: IUserDetails): Promise<IUser> {
 
 async function fetchUserByUsername(
   username: string,
-): Promise<[IUser, string, string] | null> {
+): Promise<[IUser, string] | null> {
   const result = await prisma.user.findUnique({
     where: { userName: username },
     select: {
@@ -29,12 +29,11 @@ async function fetchUserByUsername(
       servantPrepYear: true,
       status: true,
       password: true,
-      pfpPath: true,
     },
   });
   if (!result) return null;
 
-  const { password, pfpPath, ...user } = result;
-  return [user as IUser, password, pfpPath];
+  const { password, ...user } = result;
+  return [user as IUser, password];
 }
 export { insertUser, fetchUserByUsername };
