@@ -3,7 +3,7 @@ export interface IUser {
   name: string;
   role: string;
   gender: string;
-  servantPrepYear: number;
+  servantPrepYear: string;
   status?: string;
   pfpUrl?: string;
 }
@@ -12,7 +12,7 @@ export interface IUserDetails {
   name: string;
   password: string;
   gender: string;
-  servantPrepYear: number;
+  servantPrepYear: string;
   userName: string;
   birthdate: string;
   address: string;

@@ -46,7 +46,7 @@ const registerController = async (
     educationYear: parseInt(req.body.educationYear, 10),
     confessionFather: req.body.confessionFather,
     liturgyDate: new Date(req.body.liturgyDate),
-    servantPrepYear: parseInt(req.body.servantPrepYear, 10),
+    servantPrepYear: req.body.servantPrepYear,
     serviceType: req.body.serviceType,
   };
   try {

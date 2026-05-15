@@ -37,18 +37,18 @@ model User {
   password           String
   name               String
   gender             Gender
-  birthdate          String
+  birthdate          DateTime
   address            String
   role               Role
   whatsapp           String
   phoneNumber        String      @unique
-  homeNumber         String
+  homeNumber         String?
   schoolName         String
   educationType      String
   educationYear      Int
   confessionFather   String
   liturgyDate        DateTime
-  servantPrepYear    Int
+  servantPrepYear    String
   serviceType        String
   registerDate       DateTime @default(now())
   status             Status     @default(PENDING)
