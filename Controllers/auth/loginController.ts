@@ -21,8 +21,11 @@ const loginController = async (req: express.Request, res: express.Response) => {
     if (!isPasswordValid) {
       res.status(404).json({ message: "INVALID_CREDENTIALS" });
       return;
-    } else if (userData.status !== "APPROVED") {
+    } else if (userData.status === "PENDING") {
       res.status(403).json({ message: `ACCOUNT_PENDING` });
+      return;
+    }else if (userData.status === "REJECTED") {
+      res.status(403).json({ message: `ACCOUNT_REJECTED` });
       return;
     }
     const pfpUrl = await getPfpUrl(userData.id);
