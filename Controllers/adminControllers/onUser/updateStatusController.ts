@@ -1,6 +1,7 @@
 import express from "express";
 import { validationResult } from "express-validator";
 import { updateUserStatus } from "../../../repo/userModQueries.ts";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 const updateStatusController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
 
@@ -14,7 +15,10 @@ const updateStatusController = async (req: express.Request, res: express.Respons
     await updateUserStatus(userId, status);
     res.status(200).json({ message: "Status updated successfully" });
   } catch (err) {
-    console.error("Error updating user status:", err);
+    if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
+      res.status(404).json({ message: "USER_NOT_FOUND" });
+      return;
+    }
     res.status(500).json({ message: "ERROR_UPDATING_STATUS" });
   }
 };
