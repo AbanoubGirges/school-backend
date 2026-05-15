@@ -31,8 +31,8 @@ const loginController = async (req: express.Request, res: express.Response) => {
       res.status(500).json({ message: "ERROR_FETCHING_PROFILE_PICTURE" });
       return;
     }
-    const token = toJWT({ ...userData, pfpUrl });
-    res.status(200).json({ message: "USER_LOGGED_IN", token });
+    const token = toJWT(userData);
+    res.status(200).json({ message: "USER_LOGGED_IN", token ,pfpUrl});
   } catch (err) {
     console.error("Error during login:", err);
     res.status(500).json({ message: "ERROR_LOGGING_IN" });
