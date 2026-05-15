@@ -17,7 +17,7 @@ const uploadPfp = async (
 const getPfpUrl = async (userId: string) => {
   const { data, error } = await supabase.storage
     .from("e3dadkhodam")
-    .createSignedUrl(`/pfp/${userId}/profile.jpg`, 60, { download: true });
+    .createSignedUrl(`/pfp/${userId}/profile.jpg`, 60);
   if (error) {
     return error;
   }
