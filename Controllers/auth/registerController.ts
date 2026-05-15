@@ -36,7 +36,7 @@ const registerController = async (
     password: hashedPassword,
     name: req.body.name,
     gender: req.body.gender,
-    birthdate: req.body.birthdate,
+    birthdate: new Date(req.body.birthdate),
     address: req.body.address,
     whatsapp: req.body.whatsapp,
     phoneNumber: req.body.phoneNumber,
