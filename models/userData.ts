@@ -14,7 +14,7 @@ export interface IUserDetails {
   gender: string;
   servantPrepYear: string;
   userName: string;
-  birthdate: string;
+  birthdate: Date;
   address: string;
   whatsapp: string;
   phoneNumber: string;

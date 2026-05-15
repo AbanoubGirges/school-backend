@@ -17,6 +17,7 @@ const registerController = async (
     res.status(400).json({ errors: errors.array() });
     return;
   }
+  req.body.id = uuidv4();
   if (req.file) {
     const uploaded = await uploadPfp(req.file.buffer, req.body.id);
     if (uploaded instanceof Error || !uploaded) {
@@ -31,7 +32,7 @@ const registerController = async (
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   const destructuredBody = {
-    id: uuidv4(),
+    id: req.body.id,
     userName: req.body.userName,
     password: hashedPassword,
     name: req.body.name,
