@@ -1,6 +1,7 @@
 import express from "express";
 import { createAttendanceRecord } from "../../../repo/attendanceQueries.ts";
 import { validationResult } from "express-validator";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 const createAttendanceController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -13,9 +14,11 @@ const createAttendanceController = async (req: express.Request, res: express.Res
       res.status(400).json({ message: "MISSING_REQUIRED_FIELDS" });
       return;
     }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const attendanceRecord = await createAttendanceRecord(
       id,
-      new Date(),
+      today,
       status.toUpperCase(),
       note
     );
@@ -23,6 +26,10 @@ const createAttendanceController = async (req: express.Request, res: express.Res
       .status(201)
       .json({ message: "ATTENDANCE_RECORD_CREATED", data: attendanceRecord });
   } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError && err.message === "USER_NOT_FOUND") {
+      res.status(404).json({ message: "USER_NOT_FOUND" });
+      return;
+    }
     console.error("Error creating attendance record:", err);
     res.status(500).json({ message: "ERROR_CREATING_ATTENDANCE"});
   }

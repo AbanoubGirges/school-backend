@@ -65,7 +65,7 @@ enum AttendanceStatus {
 model Attendance {
   id          String   @id @default(uuid())
   userId      String
-  date        DateTime @default(now())
+  date        DateTime @unique @default(now())
   status      AttendanceStatus
   user        User     @relation(fields: [userId], references: [id])
   note     String?
