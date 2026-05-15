@@ -5,7 +5,7 @@ async function createAttendanceRecord(
   userId: string,
   date: Date,
   status: string,
-  note: string,
+  note: string | undefined
 ): Promise<Attendance> {
   let statusEnum: AttendanceStatus;
   status = status.toUpperCase();

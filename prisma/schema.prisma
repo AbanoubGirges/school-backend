@@ -68,7 +68,7 @@ model Attendance {
   date        DateTime @default(now())
   status      AttendanceStatus
   user        User     @relation(fields: [userId], references: [id])
-  excuse     String?
+  note     String?
 }
 //lectures model
 model Lecture {

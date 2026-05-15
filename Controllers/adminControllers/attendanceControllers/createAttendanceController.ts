@@ -17,7 +17,7 @@ const createAttendanceController = async (req: express.Request, res: express.Res
       id,
       new Date(),
       status.toUpperCase(),
-      note || undefined
+      note
     );
     res
       .status(201)
