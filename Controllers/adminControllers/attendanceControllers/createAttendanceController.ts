@@ -1,6 +1,12 @@
 import express from "express";
 import { createAttendanceRecord } from "../../../repo/attendanceQueries.ts";
+import { validationResult } from "express-validator";
 const createAttendanceController = async (req: express.Request, res: express.Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({ errors: errors.array() });
+    return;
+  }
   try {
     const { id, note, status } = req.body;
     if (!id || !status) {
