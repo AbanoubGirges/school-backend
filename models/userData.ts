@@ -20,10 +20,10 @@ export interface IUserDetails {
   phoneNumber: string;
   homeNumber: string;
   schoolName: string;
-  eductaionType: string;
+  educationType: string;
   educationYear: number;
   confessionFather: string;
-  litrugyDate: Date;
+  liturgyDate: Date;
   serviceType: string;
   pfpUrl?: string;
 }

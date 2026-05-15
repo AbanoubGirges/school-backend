@@ -42,14 +42,13 @@ const registerController = async (
     phoneNumber: req.body.phoneNumber,
     homeNumber: req.body.homeNumber,
     schoolName: req.body.schoolName,
-    eductaionType: req.body.eductaionType,
+    educationType: req.body.educationType,
     educationYear: parseInt(req.body.educationYear, 10),
     confessionFather: req.body.confessionFather,
-    litrugyDate: new Date(req.body.litrugyDate),
+    liturgyDate: new Date(req.body.liturgyDate),
     servantPrepYear: parseInt(req.body.servantPrepYear, 10),
     serviceType: req.body.serviceType,
   };
-
   try {
     const userData: IUser | null = await insertUser(destructuredBody);
     if (userData) {

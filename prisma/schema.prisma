@@ -44,10 +44,10 @@ model User {
   phoneNumber        String      @unique
   homeNumber         String
   schoolName         String
-  eductaionType      String
+  educationType      String
   educationYear      Int
   confessionFather   String
-  litrugyDate        DateTime
+  liturgyDate        DateTime
   servantPrepYear    Int
   serviceType        String
   registerDate       DateTime @default(now())

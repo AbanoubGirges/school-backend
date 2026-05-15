@@ -10,10 +10,10 @@ const registerValidator = [
   body("phoneNumber").notEmpty(),
   body("homeNumber").notEmpty(),
   body("schoolName").notEmpty(),
-  body("eductaionType").notEmpty(),
+  body("educationType").notEmpty(),
   body("educationYear").notEmpty(),
   body("confessionFather").notEmpty(),
-  body("litrugyDate").notEmpty(),
+  body("liturgyDate").notEmpty(),
   body("servantPrepYear").notEmpty(),
   body("serviceType").notEmpty(),
 ];

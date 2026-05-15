@@ -6,6 +6,11 @@ import registerValidator from "../utils/registerValidator.ts";
 import { loginValidator } from "../utils/registerValidator.ts";
 const authRouter = express.Router();
 
-authRouter.post("/register", registerValidator,multerInstance.single("pfp"), registerController);
-authRouter.post("/login", loginValidator,loginController);
+authRouter.post(
+  "/register",
+  multerInstance.single("pfp"),
+  registerValidator,
+  registerController,
+);
+authRouter.post("/login", loginValidator, loginController);
 export default authRouter;
