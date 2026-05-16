@@ -37,7 +37,7 @@ const uploadLecturesController = async (
       title,
       subject: subject.toUpperCase(),
       type: req.file.mimetype.split("/")[0],
-      date,
+      date: new Date(date),
       path: result.lecturePath,
     });
     res.status(201).json(dbResult);

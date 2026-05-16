@@ -36,6 +36,12 @@ async function createAttendanceRecord(
   return attendanceRecord;
 }
 async function getAttendanceByUserId(userId: string): Promise<Attendance[]> {
+  const isUserExist = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  if (!isUserExist) {
+    throw new Error("USER_NOT_FOUND");
+  }
   const attendanceRecords = await prisma.attendance.findMany({
     where: { userId },
   });
