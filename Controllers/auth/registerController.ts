@@ -65,7 +65,7 @@ const registerController = async (
       );
     }
     console.error("Error registering user:", err);
-
+    //unique constraint failed error
     if (
       err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2002"
