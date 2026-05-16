@@ -1,6 +1,6 @@
 import express from "express";
 import { validationResult } from "express-validator";
-import { updateUserStatus } from "../../../repo/userModQueries.ts";
+import { updateUserStatus } from "../../../repo/userModQueries.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 const updateStatusController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);

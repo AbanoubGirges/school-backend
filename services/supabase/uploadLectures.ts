@@ -1,4 +1,4 @@
-import { supabase } from "../../config/supabaseConfig.ts";
+import { supabase } from "../../config/supabaseConfig.js";
 const uploadLectures = async (
   fileBuffer: Buffer,
   mimeType: string,

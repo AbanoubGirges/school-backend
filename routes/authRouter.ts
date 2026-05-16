@@ -1,9 +1,9 @@
 import express from "express";
-import registerController from "../Controllers/auth/registerController.ts";
-import loginController from "../Controllers/auth/loginController.ts";
-import multerInstance from "../middleware/multer.ts";
-import registerValidator from "../utils/registerValidator.ts";
-import { loginValidator } from "../utils/registerValidator.ts";
+import registerController from "../Controllers/auth/registerController.js";
+import loginController from "../Controllers/auth/loginController.js";
+import multerInstance from "../middleware/multer.js";
+import registerValidator from "../utils/registerValidator.js";
+import { loginValidator } from "../utils/registerValidator.js";
 const authRouter = express.Router();
 
 authRouter.post(

@@ -11,8 +11,7 @@
     "rootDir": ".",
     "types": ["node"],
     /* Required when using allowImportingTsExtensions */
-    "noEmit": true, 
-    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "allowJs": true
   },
   "include": ["**/*.ts"],

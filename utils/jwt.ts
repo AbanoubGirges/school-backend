@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
-import type { IUser } from "../models/userData.ts";
+import type { IUser } from "../models/userData.js";
 import { Role } from "@prisma/client";
 
 /**

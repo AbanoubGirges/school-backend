@@ -1,6 +1,6 @@
-import { prisma } from "../config/prismaConnection.ts";
-import type { IUserDetails } from "../models/userData.ts";
-import type { IUser } from "../models/userData.ts";
+import { prisma } from "../config/prismaConnection.js";
+import type { IUserDetails } from "../models/userData.js";
+import type { IUser } from "../models/userData.js";
 import type { Prisma } from "@prisma/client";
 import { Role, Status, Gender } from "@prisma/client";
 async function insertUser(user: IUserDetails): Promise<IUser> {

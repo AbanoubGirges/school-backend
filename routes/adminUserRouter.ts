@@ -1,11 +1,11 @@
 import express from "express";
-import authAdmin from "../middleware/authAdmin.ts";
-import { updateStatusController } from "../Controllers/adminControllers/onUser/updateStatusController.ts";
-import { getPendingController } from "../Controllers/adminControllers/onUser/getPendingController.ts";
-import { fetchUserController } from "../Controllers/adminControllers/onUser/fetchUserController.ts";
+import authAdmin from "../middleware/authAdmin.js";
+import { updateStatusController } from "../Controllers/adminControllers/onUser/updateStatusController.js";
+import { getPendingController } from "../Controllers/adminControllers/onUser/getPendingController.js";
+import { fetchUserController } from "../Controllers/adminControllers/onUser/fetchUserController.js";
 import { body } from "express-validator";
-import updateRoleController from "../Controllers/adminControllers/onUser/updateRoleController.ts";
-import { authSUDO } from "../middleware/authSUDO.ts";
+import updateRoleController from "../Controllers/adminControllers/onUser/updateRoleController.js";
+import { authSUDO } from "../middleware/authSUDO.js";
 const adminUserRouter = express.Router();
 adminUserRouter.patch("/:id/status",authAdmin,[body("status").isIn(["APPROVED", "REJECTED", "PENDING"])], updateStatusController);
 adminUserRouter.get("/pending", authAdmin, getPendingController);

@@ -1,4 +1,4 @@
-import { prisma } from "../config/prismaConnection.ts";
+import { prisma } from "../config/prismaConnection.js";
 import { AttendanceStatus } from "@prisma/client";
 import type { Attendance } from "@prisma/client";
 async function createAttendanceRecord(

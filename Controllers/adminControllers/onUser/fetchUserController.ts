@@ -1,6 +1,6 @@
 import express from "express";
-import { fetchUserData } from "../../../repo/userDataQueries.ts";
-import { getPfpUrl } from "../../../services/supabase/uploadPfp.ts";
+import { fetchUserData } from "../../../repo/userDataQueries.js";
+import { getPfpUrl } from "../../../services/supabase/uploadPfp.js";
 const fetchUserController = async (req: express.Request, res: express.Response) => {
   try {
     const userId = req.params.id as string;

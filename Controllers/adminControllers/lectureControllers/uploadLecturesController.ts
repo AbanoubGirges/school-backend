@@ -1,7 +1,7 @@
 import express from "express";
-import { uploadLectures } from "../../../services/supabase/uploadLectures.ts";
+import { uploadLectures } from "../../../services/supabase/uploadLectures.js";
 import { v4 as uuidv4 } from "uuid";
-import { insertLecture } from "../../../repo/lecturesQueries.ts";
+import { insertLecture } from "../../../repo/lecturesQueries.js";
 const uploadLecturesController = async (
   req: express.Request,
   res: express.Response,

@@ -1,5 +1,5 @@
 import { Status } from "@prisma/client";
-import { prisma } from "../config/prismaConnection.ts";
+import { prisma } from "../config/prismaConnection.js";
 import { Role } from "@prisma/client";
 async function updateUserStatus(id: string, status: string): Promise<void> {
   await prisma.user.update({

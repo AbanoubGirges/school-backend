@@ -1,6 +1,6 @@
 import express from "express";
-import { getLectureById, getLectures } from "../../../repo/lecturesQueries.ts";
-import { getLectureUrl } from "../../../services/supabase/uploadLectures.ts";
+import { getLectureById, getLectures } from "../../../repo/lecturesQueries.js";
+import { getLectureUrl } from "../../../services/supabase/uploadLectures.js";
 const getLecturesController = async (
   req: express.Request,
   res: express.Response,

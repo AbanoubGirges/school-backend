@@ -1,4 +1,4 @@
-import { supabase } from "../../config/supabaseConfig.ts";
+import { supabase } from "../../config/supabaseConfig.js";
 const uploadPfp = async (
   fileBuffer: Buffer,
   userId: string,

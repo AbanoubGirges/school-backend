@@ -1,5 +1,5 @@
 import express from "express";
-import { getAttendanceByUserId } from "../../repo/attendanceQueries.ts";
+import { getAttendanceByUserId } from "../../repo/attendanceQueries.js";
 const getAttendanceController = async (req: express.Request, res: express.Response) => {
   try {
     const userId = req.user?.id as string;

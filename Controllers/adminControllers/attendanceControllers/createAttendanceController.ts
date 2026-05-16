@@ -1,5 +1,5 @@
 import express from "express";
-import { createAttendanceRecord } from "../../../repo/attendanceQueries.ts";
+import { createAttendanceRecord } from "../../../repo/attendanceQueries.js";
 import { validationResult } from "express-validator";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Prisma } from "@prisma/client";

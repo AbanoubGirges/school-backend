@@ -1,9 +1,9 @@
 import express from "express";
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
-import { fetchUserByUsername } from "../../repo/authQueries.ts";
-import { toJWT } from "../../utils/jwt.ts";
-import { getPfpUrl } from "../../services/supabase/uploadPfp.ts";
+import { fetchUserByUsername } from "../../repo/authQueries.js";
+import { toJWT } from "../../utils/jwt.js";
+import { getPfpUrl } from "../../services/supabase/uploadPfp.js";
 const loginController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

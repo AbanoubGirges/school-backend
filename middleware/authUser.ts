@@ -1,5 +1,5 @@
 import express from "express";
-import { validateToken } from "../utils/jwt.ts";
+import { validateToken } from "../utils/jwt.js";
 const authUser = (
   req: express.Request,
   res: express.Response,

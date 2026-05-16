@@ -1,4 +1,4 @@
-import { prisma } from "../config/prismaConnection.ts";
+import { prisma } from "../config/prismaConnection.js";
 import type { Lecture } from "@prisma/client";
 import { Subject } from "@prisma/client";
 

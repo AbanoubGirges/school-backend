@@ -1,5 +1,5 @@
 import express from "express";
-import { fetchPendingUsers } from "../../../repo/userModQueries.ts";
+import { fetchPendingUsers } from "../../../repo/userModQueries.js";
 const getPendingController=async(req:express.Request,res:express.Response)=>{
     try{
         const pendingUsers: { id: string; name: string }[] = await fetchPendingUsers();

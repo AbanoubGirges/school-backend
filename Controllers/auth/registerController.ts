@@ -1,11 +1,11 @@
 import express from "express";
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
-import { insertUser } from "../../repo/authQueries.ts";
-import { toJWT } from "../../utils/jwt.ts";
+import { insertUser } from "../../repo/authQueries.js";
+import { toJWT } from "../../utils/jwt.js";
 import type { IUser, IUserDetails } from "../../models/userData.ts";
-import { uploadPfp } from "../../services/supabase/uploadPfp.ts";
-import { deletePfp } from "../../services/supabase/uploadPfp.ts";
+import { uploadPfp } from "../../services/supabase/uploadPfp.js";
+import { deletePfp } from "../../services/supabase/uploadPfp.js";
 import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
 const registerController = async (

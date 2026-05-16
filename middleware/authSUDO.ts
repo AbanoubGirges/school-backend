@@ -1,5 +1,5 @@
 import express from "express";
-import { validateToken } from "../utils/jwt.ts";
+import { validateToken } from "../utils/jwt.js";
 const authSUDO = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const authHeader = req.headers.authorization;

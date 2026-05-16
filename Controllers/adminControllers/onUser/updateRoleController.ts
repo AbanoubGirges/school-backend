@@ -1,5 +1,5 @@
 import express from "express";
-import { updateUserRole } from "../../../repo/userModQueries.ts";
+import { updateUserRole } from "../../../repo/userModQueries.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 const updateRoleController = async (req: express.Request, res: express.Response) => {
   try {

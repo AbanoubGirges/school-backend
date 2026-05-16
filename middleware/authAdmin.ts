@@ -1,5 +1,5 @@
 import express from "express";
-import { validateToken } from "../utils/jwt.ts";
+import { validateToken } from "../utils/jwt.js";
 const authAdmin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
@@ -13,7 +13,7 @@ const authAdmin = (req: express.Request, res: express.Response, next: express.Ne
       res.status(401).json({ message: "INVALID_TOKEN" });
       return;
     }
-    
+
     if (decoded.role !== "ADMIN"||decoded.role !== "SUDO") {
       res.status(403).json({ message: "ACCESS_DENIED" });
       return;
