@@ -13,13 +13,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/auth", authRouter);
-app.use("/user", adminUserRouter);
-app.use("/user", userRouter);
+const apiV1=express.Router();
+apiV1.use("/auth", authRouter);
+apiV1.use("/user", adminUserRouter);
+apiV1.use("/user", userRouter);
 // app.use("/", );
-app.use("/attendance/admin", adminAttendanceRouter);
-app.use("/attendance", userAttendanceRouter);
-app.use("/lectures",lecturesRouter)
+apiV1.use("/attendance/admin", adminAttendanceRouter);
+apiV1.use("/attendance", userAttendanceRouter);
+apiV1.use("/lectures",lecturesRouter)
+app.use("/api/v1", apiV1);
 app.use((err: Error|multer.MulterError, req: express.Request, res: express.Response, next: express.NextFunction) => {
   // multer-specific errors
   if (err instanceof multer.MulterError) {
