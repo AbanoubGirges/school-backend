@@ -1,10 +1,11 @@
 import { prisma } from "../config/prismaConnection.ts";
-import type { User } from "@prisma/client";
+import { IUserDetails } from "../models/userData.ts";
 
-async function fetchUserData(id: string): Promise<User | null> {
+async function fetchUserData(id: string): Promise<Partial<Omit<IUserDetails, 'password'>> | null> {
   const user = await prisma.user.findUnique({
     where: { id },
   });
-  return user;
+  const {password, ...userData} = user || {};
+  return userData;
 }
 export { fetchUserData };
