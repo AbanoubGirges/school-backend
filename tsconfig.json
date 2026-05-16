@@ -10,8 +10,7 @@
     "outDir": "dist",
     "rootDir": ".",
     "types": ["node"],
-    /* Required when using allowImportingTsExtensions */
-    "noEmit": true,
+    "noEmit": false,
     "allowJs": true
   },
   "include": ["**/*.ts"],
