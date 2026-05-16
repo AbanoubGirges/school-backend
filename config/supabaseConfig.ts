@@ -1,9 +1,16 @@
-import {createClient} from '@supabase/supabase-js';
-import dotenv from 'dotenv';
+import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
 dotenv.config();
-const supabase=createClient(
-process.env.SUPABASE_URL!,
-process.env.SUPABASE_SERVICE_ROLE!
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE!,
+  {
+    realtime: {
+      params: {
+        eventsPerSecond: 0,
+      },
+    },
+  },
 );
 
-export {supabase};
+export { supabase };
