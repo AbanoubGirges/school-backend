@@ -1,5 +1,6 @@
 import { Status } from "@prisma/client";
 import { prisma } from "../config/prismaConnection.ts";
+import { Role } from "@prisma/client";
 async function updateUserStatus(id: string, status: string): Promise<void> {
   await prisma.user.update({
     where: { id },
@@ -13,5 +14,10 @@ async function fetchPendingUsers(): Promise<{ id: string; name: string }[]> {
   });
   return pendingUsers;
 }
-
-export { updateUserStatus, fetchPendingUsers };
+async function updateUserRole(id: string, role: string): Promise<void> {
+  await prisma.user.update({
+    where: { id },
+    data: { role: role.toUpperCase() as Role },
+  });
+}
+export { updateUserStatus, fetchPendingUsers, updateUserRole };

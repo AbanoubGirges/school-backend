@@ -1,23 +1,27 @@
 import express from "express";
 import { validateToken } from "../utils/jwt.ts";
-const authUser = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const authUser = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        res.status(401).json({ message: "AUTH_HEADER_MISSING" });
-        return;
+      res.status(401).json({ message: "AUTH_HEADER_MISSING" });
+      return;
     }
     const token = authHeader.split(" ")[1];
-    const {isValid, decoded} = validateToken(token,false);
-    if (!isValid||!decoded) {
-        res.status(401).json({ message: "INVALID_TOKEN" });
-        return;
+    const { isValid, decoded } = validateToken(token);
+    if (!isValid || !decoded) {
+      res.status(401).json({ message: "INVALID_TOKEN" });
+      return;
     }
     req.user = decoded;
     next();
   } catch (err) {
     console.error("Error validating token:", err);
-    res.status(500).json({ message: "ERROR_VALIDATING_TOKEN"});
+    res.status(500).json({ message: "ERROR_VALIDATING_TOKEN" });
   }
 };
 export { authUser };

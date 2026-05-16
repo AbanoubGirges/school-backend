@@ -20,6 +20,7 @@ enum Gender {
 }
 
 enum Role {
+  SUDO
   ADMIN
   USER
   FATHER

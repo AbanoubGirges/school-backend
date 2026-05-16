@@ -3,7 +3,7 @@ import multerInstance from "../middleware/multer.ts";
 import uploadLecturesController from "../Controllers/adminControllers/lectureControllers/uploadLecturesController.ts";
 import getLecturesController from "../Controllers/adminControllers/lectureControllers/getLecturesController.ts";
 import authAdmin from "../middleware/authAdmin.ts";
-import authAdminOrUser from "../middleware/authAdminOrUser.ts";
+import { authUser } from "../middleware/authUser.ts";
 const lecturesRouter = express.Router();
 lecturesRouter.post(
   "/",
@@ -11,5 +11,5 @@ lecturesRouter.post(
   authAdmin,
   uploadLecturesController,
 );
-lecturesRouter.get("/:subject", authAdminOrUser, getLecturesController);
+lecturesRouter.get("/:subject", authUser, getLecturesController);
 export default lecturesRouter;

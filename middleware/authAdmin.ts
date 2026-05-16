@@ -8,16 +8,13 @@ const authAdmin = (req: express.Request, res: express.Response, next: express.Ne
       return;
     }
     const token = authHeader.split(" ")[1];
-    
-    /*
-    * @param isAdmin true to validate against admin secret
-    */
-    const { isValid, decoded } = validateToken(token,true);
+    const { isValid, decoded } = validateToken(token);
     if (!isValid || !decoded) {
       res.status(401).json({ message: "INVALID_TOKEN" });
       return;
     }
-    if (decoded.role !== "ADMIN") {
+    
+    if (decoded.role !== "ADMIN"||decoded.role !== "SUDO") {
       res.status(403).json({ message: "ACCESS_DENIED" });
       return;
     }

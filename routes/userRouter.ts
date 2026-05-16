@@ -1,7 +1,7 @@
 import express from "express";
 import getProfileController from "../Controllers/userControllers/getProfileController.ts";
-import authAdminOrUser from "../middleware/authAdminOrUser.ts";
+import { authUser } from "../middleware/authUser.ts";
 const userRouter = express.Router();
-userRouter.use(authAdminOrUser);
+userRouter.use(authUser);
 userRouter.get("/", getProfileController);
 export default userRouter;

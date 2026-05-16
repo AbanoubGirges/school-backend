@@ -9,31 +9,18 @@ import { Role } from "@prisma/client";
  * @returns
  */
 const toJWT = (payload: IUser) => {
-  if (payload.role === Role.ADMIN) {
-    return jwt.sign({ ...payload }, process.env.ADMIN_JWT_SECRET as string, {
-      expiresIn: "30d",
-    });
-  } else
-    return jwt.sign({ ...payload }, process.env.JWT_SECRET as string, {
-      expiresIn: "30d",
-    });
+  return jwt.sign({ ...payload }, process.env.JWT_SECRET as string, {
+    expiresIn: "30d",
+  });
 };
 
-const validateToken = (token: string, isAdmin: boolean) => {
+const validateToken = (token: string) => {
   try {
-    if (isAdmin) {
-      const decoded = jwt.verify(
-        token,
-        process.env.ADMIN_JWT_SECRET as string,
-      ) as JwtPayload;
-      return { isValid: true, decoded };
-    } else {
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET as string,
-      ) as JwtPayload;
-      return { isValid: true, decoded };
-    }
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as JwtPayload;
+    return { isValid: true, decoded };
   } catch (error) {
     return { isValid: false, decoded: null };
   }
