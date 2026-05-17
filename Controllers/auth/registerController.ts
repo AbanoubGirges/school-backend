@@ -22,7 +22,7 @@ const registerController = async (
     const uploaded = await uploadPfp(req.file.buffer, req.body.id);
     if (uploaded instanceof Error || !uploaded) {
       console.error("Error uploading profile picture:", uploaded);
-      res.status(500).json({ message: "ERROR_UPLOADING_PROFILE_PICTURE" });
+      res.status(500).json({ error: "ERROR_UPLOADING_PROFILE_PICTURE" });
       return;
     }
     const { pfpUrl } = uploaded;
@@ -54,7 +54,7 @@ const registerController = async (
     const userData: IUser | null = await insertUser(destructuredBody);
     if (userData) {
     //  const token = toJWT({ ...userData, pfpUrl: req.body.pfpUrl });
-      res.status(201).json({ message: "USER_REGISTERED" });
+      res.status(201).json({ error: "USER_REGISTERED" });
     }
   } catch (err) {
     const deleteResult = await deletePfp(req.body.id);
@@ -77,7 +77,7 @@ const registerController = async (
       return;
     }
 
-    res.status(500).json({ message: "ERROR_REGISTERING_USER" });
+    res.status(500).json({ error: "ERROR_REGISTERING_USER" });
   }
 };
 

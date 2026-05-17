@@ -8,7 +8,7 @@ const getLecturesController = async (
   try {
     const subject = req.params.subject as string;
     if (!subject) {
-      res.status(400).json({ message: "MISSING_SUBJECT" });
+      res.status(400).json({ error: "MISSING_SUBJECT" });
       return;
     }
     const lecturePath = req.query.lectureId as string;
@@ -18,20 +18,20 @@ const getLecturesController = async (
     } else {
       const lectureData = await getLectureById(lecturePath);
       if (!lectureData) {
-        res.status(404).json({ message: "LECTURE_NOT_FOUND" });
+        res.status(404).json({ error: "LECTURE_NOT_FOUND" });
         return;
       }
       const lectureUrl = await getLectureUrl(lectureData.path);
       if (lectureUrl instanceof Error) {
         console.error("Error getting lecture URL:", lectureUrl);
-        res.status(500).json({ message: "ERROR_GETTING_LECTURE_URL" });
+        res.status(500).json({ error: "ERROR_GETTING_LECTURE_URL" });
         return;
       }
       res.status(200).json({ ...lectureData, lectureUrl });
     }
   } catch (err) {
     console.error("Error fetching lectures:", err);
-    res.status(500).json({ message: "ERROR_FETCHING_LECTURES" });
+    res.status(500).json({ error: "ERROR_FETCHING_LECTURES" });
   }
 };
 export default getLecturesController;

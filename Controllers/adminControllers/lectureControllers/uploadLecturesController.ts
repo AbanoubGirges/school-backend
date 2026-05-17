@@ -8,7 +8,7 @@ const uploadLecturesController = async (
 ) => {
   try {
     if (!req.file) {
-      res.status(400).json({ message: "NO_FILE_UPLOADED" });
+      res.status(400).json({ error: "NO_FILE_UPLOADED" });
       return;
     }
     const {
@@ -17,7 +17,7 @@ const uploadLecturesController = async (
       date,
     }: { title: string; subject: string; date: Date } = req.body;
     if (!title || !subject || !date) {
-      res.status(400).json({ message: "MISSING_REQUIRED_FIELDS" });
+      res.status(400).json({ error: "MISSING_REQUIRED_FIELDS" });
       return;
     }
     const lectureId = uuidv4();
@@ -29,7 +29,7 @@ const uploadLecturesController = async (
     );
     if (result instanceof Error || !result) {
       console.error("Error uploading lecture:", result);
-      res.status(500).json({ message: "ERROR_UPLOADING_LECTURE" });
+      res.status(500).json({ error: "ERROR_UPLOADING_LECTURE" });
       return;
     }
     const dbResult = await insertLecture({
@@ -43,7 +43,7 @@ const uploadLecturesController = async (
     res.status(201).json(dbResult);
   } catch (err) {
     console.error("Error uploading lecture:", err);
-    res.status(500).json({ message: "ERROR_UPLOADING_LECTURE" });
+    res.status(500).json({ error: "ERROR_UPLOADING_LECTURE" });
   }
 };
 export default uploadLecturesController;

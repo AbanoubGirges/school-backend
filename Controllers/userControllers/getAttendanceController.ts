@@ -7,7 +7,7 @@ const getAttendanceController = async (req: express.Request, res: express.Respon
     res.json(attendanceRecords);
   } catch (err) {
     console.error("Error fetching attendance records:", err);
-    res.status(500).json({ message: "ERROR_GETTING_ATTENDANCE" });
+    res.status(500).json({ error: "ERROR_GETTING_ATTENDANCE" });
   }
 };
 export default getAttendanceController;

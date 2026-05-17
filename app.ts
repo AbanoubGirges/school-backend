@@ -26,14 +26,14 @@ app.use((err: Error|multer.MulterError, req: express.Request, res: express.Respo
   // multer-specific errors
   if (err instanceof multer.MulterError) {
     return res.status(400).json({
-      message: err.message,
+      error: err.message,
     });
   }
 
   // custom fileFilter errors
   if (err) {
     return res.status(400).json({
-      message: err.message,
+      error: err.message,
     });
   }
 

@@ -15,7 +15,7 @@ const createAttendanceController = async (
   try {
     const { id, note, status } = req.body;
     if (!id || !status) {
-      res.status(400).json({ message: "MISSING_REQUIRED_FIELDS" });
+      res.status(400).json({ error: "MISSING_REQUIRED_FIELDS" });
       return;
     }
     const today = new Date();
@@ -28,13 +28,13 @@ const createAttendanceController = async (
     );
     res
       .status(201)
-      .json({ message: "ATTENDANCE_RECORD_CREATED", data: attendanceRecord });
+      .json({ error: "ATTENDANCE_RECORD_CREATED", data: attendanceRecord });
   } catch (err) {
     if (
       err instanceof PrismaClientKnownRequestError &&
       err.message === "USER_NOT_FOUND"
     ) {
-      res.status(404).json({ message: "USER_NOT_FOUND" });
+      res.status(404).json({ error: "USER_NOT_FOUND" });
       return;
     }
     if (
@@ -47,7 +47,7 @@ const createAttendanceController = async (
       return;
     }
     console.error("Error creating attendance record:", err);
-    res.status(500).json({ message: "ERROR_CREATING_ATTENDANCE" });
+    res.status(500).json({ error: "ERROR_CREATING_ATTENDANCE" });
   }
 };
 export { createAttendanceController };
