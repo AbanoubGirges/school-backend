@@ -54,7 +54,7 @@ const registerController = async (
     const userData: IUser | null = await insertUser(destructuredBody);
     if (userData) {
     //  const token = toJWT({ ...userData, pfpUrl: req.body.pfpUrl });
-      res.status(201).json({ error: "USER_REGISTERED" });
+      res.status(201).json({ message: "USER_REGISTERED" });
     }
   } catch (err) {
     const deleteResult = await deletePfp(req.body.id);

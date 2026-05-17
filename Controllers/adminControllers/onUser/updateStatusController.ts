@@ -13,7 +13,7 @@ const updateStatusController = async (req: express.Request, res: express.Respons
     const userId = req.params.id as string;
     const { status } = req.body;
     await updateUserStatus(userId, status);
-    res.status(200).json({ error: "Status updated successfully" });
+    res.status(200).json({ message: "Status updated successfully" });
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
       res.status(404).json({ error: "USER_NOT_FOUND" });

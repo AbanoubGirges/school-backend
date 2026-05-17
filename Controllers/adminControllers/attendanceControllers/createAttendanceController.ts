@@ -28,7 +28,7 @@ const createAttendanceController = async (
     );
     res
       .status(201)
-      .json({ error: "ATTENDANCE_RECORD_CREATED", data: attendanceRecord });
+      .json({ message: "ATTENDANCE_RECORD_CREATED", data: attendanceRecord });
   } catch (err) {
     if (
       err instanceof PrismaClientKnownRequestError &&
