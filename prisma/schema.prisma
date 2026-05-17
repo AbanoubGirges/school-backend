@@ -46,7 +46,7 @@ model User {
   homeNumber         String?
   schoolName         String
   educationType      String
-  educationYear      Int
+  educationYear      String
   confessionFather   String
   liturgyDate        DateTime
   servantPrepYear    String
