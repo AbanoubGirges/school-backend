@@ -35,7 +35,8 @@ const loginController = async (req: express.Request, res: express.Response) => {
       return;
     }
     const token = toJWT(userData);
-    res.status(200).json({ message: "USER_LOGGED_IN", token ,pfpUrl});
+    const userResponse:{ name: string; pfpUrl: string; role: string } = { name: userData.name, pfpUrl, role: userData.role };
+    res.status(200).json({ message: "USER_LOGGED_IN", token, userResponse });
   } catch (err) {
     console.error("Error during login:", err);
     res.status(500).json({ message: "ERROR_LOGGING_IN" });
