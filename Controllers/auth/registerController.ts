@@ -44,7 +44,7 @@ const registerController = async (
     homeNumber: req.body.homeNumber,
     schoolName: req.body.schoolName,
     educationType: req.body.educationType,
-    educationYear: parseInt(req.body.educationYear, 10),
+    educationYear: req.body.educationYear,
     confessionFather: req.body.confessionFather,
     liturgyDate: new Date(req.body.liturgyDate),
     servantPrepYear: req.body.servantPrepYear,
