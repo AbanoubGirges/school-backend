@@ -21,7 +21,7 @@ export interface IUserDetails {
   homeNumber: string| null;
   schoolName: string;
   educationType: string;
-  educationYear: number;
+  educationYear: string;
   confessionFather: string;
   liturgyDate: Date;
   serviceType: string;
