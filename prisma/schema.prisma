@@ -48,7 +48,7 @@ model User {
   educationType      String
   educationYear      String
   confessionFather   String
-  liturgyDate        DateTime
+  liturgyDate        String
   servantPrepYear    String
   serviceType        String
   registerDate       DateTime @default(now())

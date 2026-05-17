@@ -46,7 +46,7 @@ const registerController = async (
     educationType: req.body.educationType,
     educationYear: req.body.educationYear,
     confessionFather: req.body.confessionFather,
-    liturgyDate: new Date(req.body.liturgyDate),
+    liturgyDate: req.body.liturgyDate,
     servantPrepYear: req.body.servantPrepYear,
     serviceType: req.body.serviceType,
   };

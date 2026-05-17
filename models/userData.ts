@@ -23,7 +23,7 @@ export interface IUserDetails {
   educationType: string;
   educationYear: string;
   confessionFather: string;
-  liturgyDate: Date;
+  liturgyDate: string;
   serviceType: string;
   pfpUrl?: string;
 }
