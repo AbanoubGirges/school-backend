@@ -36,12 +36,14 @@ const loginController = async (req: express.Request, res: express.Response) => {
     }
     const token = toJWT(userData);
     const userResponse: {
+      id: string;
       name: string;
       pfpUrl: string;
       role: string;
       gender: string;
       level: string;
     } = {
+      id: userData.id,
       name: userData.name,
       role: userData.role,
       gender: userData.gender,
