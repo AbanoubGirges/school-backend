@@ -24,7 +24,7 @@ const loginController = async (req: express.Request, res: express.Response) => {
     } else if (userData.status === "PENDING") {
       res.status(403).json({ error: `ACCOUNT_PENDING` });
       return;
-    }else if (userData.status === "REJECTED") {
+    } else if (userData.status === "REJECTED") {
       res.status(403).json({ error: `ACCOUNT_REJECTED` });
       return;
     }
@@ -35,7 +35,17 @@ const loginController = async (req: express.Request, res: express.Response) => {
       return;
     }
     const token = toJWT(userData);
-    const userResponse:{ name: string; pfpUrl: string; role: string } = { name: userData.name, pfpUrl, role: userData.role };
+    const userResponse: {
+      name: string;
+      pfpUrl: string;
+      role: string;
+      gender: string;
+    } = {
+      name: userData.name,
+      role: userData.role,
+      gender: userData.gender,
+      pfpUrl,
+    };
     res.status(200).json({ message: "USER_LOGGED_IN", token, userResponse });
   } catch (err) {
     console.error("Error during login:", err);
