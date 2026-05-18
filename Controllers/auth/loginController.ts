@@ -40,10 +40,12 @@ const loginController = async (req: express.Request, res: express.Response) => {
       pfpUrl: string;
       role: string;
       gender: string;
+      level: string;
     } = {
       name: userData.name,
       role: userData.role,
       gender: userData.gender,
+      level: userData.servantPrepYear,
       pfpUrl,
     };
     res.status(200).json({ message: "USER_LOGGED_IN", token, userResponse });
