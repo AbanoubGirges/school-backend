@@ -16,6 +16,7 @@ const getProfileController = async (
       res.status(404).json({ error: "PROFILE_PICTURE_NOT_FOUND" });
       return;
     }
+    
     res.json({ ...user, pfpUrl });
   } catch (err) {
     console.error("Error fetching user profile:", err);

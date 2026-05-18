@@ -35,7 +35,7 @@ async function createAttendanceRecord(
   });
   return attendanceRecord;
 }
-async function getAttendanceByUserId(userId: string): Promise<Attendance[]> {
+async function getAttendanceByUserId(userId: string): Promise<{ attendanceRecords: Attendance[]; count: { present: number; absent: number; excusedLate: number; unexcusedLate: number } }> {
   const isUserExist = await prisma.user.findUnique({
     where: { id: userId },
   });
@@ -45,6 +45,30 @@ async function getAttendanceByUserId(userId: string): Promise<Attendance[]> {
   const attendanceRecords = await prisma.attendance.findMany({
     where: { userId },
   });
-  return attendanceRecords;
+  const count = () => {
+    let present = 0;
+    let absent = 0;
+    let excusedLate = 0;
+    let unexcusedLate = 0;
+    attendanceRecords.forEach((record) => {
+      switch (record.status) {
+        case AttendanceStatus.PRESENT:
+          present++;
+          break;
+        case AttendanceStatus.ABSENT:
+          absent++;
+          break;
+        case AttendanceStatus.EXCUSEDLATE:
+          excusedLate++;
+          break;
+        case AttendanceStatus.UNEXCUSEDLATE:
+          unexcusedLate++;
+          break;
+      }
+    });
+    return  { present, absent, excusedLate, unexcusedLate };
+  };
+
+  return {attendanceRecords, count: count()};
 }
 export { createAttendanceRecord, getAttendanceByUserId };
