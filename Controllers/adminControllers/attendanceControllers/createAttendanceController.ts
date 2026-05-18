@@ -20,6 +20,7 @@ const createAttendanceController = async (
     }
     const today = new Date();
     const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    console.log("Checking for existing attendance record for user:", id, "on date:", todayDateOnly);
     const attendanceRecordExists = await getAttendanceByDate(id, todayDateOnly);
     console.log("Attendance record exists for today:", attendanceRecordExists);
     if (attendanceRecordExists) {
