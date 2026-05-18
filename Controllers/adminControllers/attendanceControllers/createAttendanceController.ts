@@ -21,6 +21,7 @@ const createAttendanceController = async (
     const today = new Date();
     const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const attendanceRecordExists = await getAttendanceByDate(id, todayDateOnly);
+    console.log("Attendance record exists for today:", attendanceRecordExists);
     if (attendanceRecordExists) {
       res.status(409).json({ error: "ATTENDANCE_ALREADY_TAKEN_FOR_TODAY" });
       return;
