@@ -19,7 +19,12 @@ const createAttendanceController = async (
       return;
     }
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const attendanceRecordExists = await createAttendanceRecord(id, todayDateOnly, status.toUpperCase(), note);
+    if (attendanceRecordExists) {
+      res.status(409).json({ error: "ATTENDANCE_ALREADY_TAKEN_FOR_TODAY" });
+      return;
+    }
     const attendanceRecord = await createAttendanceRecord(
       id,
       today,
