@@ -4,19 +4,19 @@ const getProfileController = async (req, res) => {
     try {
         const user = await fetchUserData(req.user?.id);
         if (!user) {
-            res.status(404).json({ message: "USER_NOT_FOUND" });
+            res.status(404).json({ error: "USER_NOT_FOUND" });
             return;
         }
         const pfpUrl = await getPfpUrl(req.user?.id);
         if (!pfpUrl) {
-            res.status(404).json({ message: "PROFILE_PICTURE_NOT_FOUND" });
+            res.status(404).json({ error: "PROFILE_PICTURE_NOT_FOUND" });
             return;
         }
         res.json({ ...user, pfpUrl });
     }
     catch (err) {
         console.error("Error fetching user profile:", err);
-        res.status(500).json({ message: "ERROR_GETTING_PROFILE" });
+        res.status(500).json({ error: "ERROR_GETTING_PROFILE" });
     }
 };
 export default getProfileController;

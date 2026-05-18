@@ -9,11 +9,11 @@ const updateRoleController = async (req, res) => {
     }
     catch (err) {
         if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
-            res.status(404).json({ message: "USER_NOT_FOUND" });
+            res.status(404).json({ error: "USER_NOT_FOUND" });
             return;
         }
         console.error("Error updating user role:", err);
-        res.status(500).json({ message: "ERROR_UPDATING_USER_ROLE" });
+        res.status(500).json({ error: "ERROR_UPDATING_USER_ROLE" });
     }
 };
 export default updateRoleController;

@@ -6,7 +6,7 @@ const getPendingController = async (req, res) => {
     }
     catch (err) {
         console.error("Error fetching pending users:", err);
-        res.status(500).json({ message: "ERROR_FETCHING_PENDING_USERS" });
+        res.status(500).json({ error: "ERROR_FETCHING_PENDING_USERS" });
     }
 };
 export { getPendingController };

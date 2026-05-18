@@ -11,11 +11,16 @@ const createAttendanceController = async (req, res) => {
     try {
         const { id, note, status } = req.body;
         if (!id || !status) {
-            res.status(400).json({ message: "MISSING_REQUIRED_FIELDS" });
+            res.status(400).json({ error: "MISSING_REQUIRED_FIELDS" });
             return;
         }
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const attendanceRecordExists = await createAttendanceRecord(id, todayDateOnly, status.toUpperCase(), note);
+        if (attendanceRecordExists) {
+            res.status(409).json({ error: "ATTENDANCE_ALREADY_TAKEN_FOR_TODAY" });
+            return;
+        }
         const attendanceRecord = await createAttendanceRecord(id, today, status.toUpperCase(), note);
         res
             .status(201)
@@ -24,7 +29,7 @@ const createAttendanceController = async (req, res) => {
     catch (err) {
         if (err instanceof PrismaClientKnownRequestError &&
             err.message === "USER_NOT_FOUND") {
-            res.status(404).json({ message: "USER_NOT_FOUND" });
+            res.status(404).json({ error: "USER_NOT_FOUND" });
             return;
         }
         if (err instanceof Prisma.PrismaClientKnownRequestError &&
@@ -35,7 +40,7 @@ const createAttendanceController = async (req, res) => {
             return;
         }
         console.error("Error creating attendance record:", err);
-        res.status(500).json({ message: "ERROR_CREATING_ATTENDANCE" });
+        res.status(500).json({ error: "ERROR_CREATING_ATTENDANCE" });
     }
 };
 export { createAttendanceController };

@@ -15,10 +15,10 @@ const updateStatusController = async (req, res) => {
     }
     catch (err) {
         if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
-            res.status(404).json({ message: "USER_NOT_FOUND" });
+            res.status(404).json({ error: "USER_NOT_FOUND" });
             return;
         }
-        res.status(500).json({ message: "ERROR_UPDATING_STATUS" });
+        res.status(500).json({ error: "ERROR_UPDATING_STATUS" });
     }
 };
 export { updateStatusController };

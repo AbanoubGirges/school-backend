@@ -1,7 +1,6 @@
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import { insertUser } from "../../repo/authQueries.js";
-import { toJWT } from "../../utils/jwt.js";
 import { uploadPfp } from "../../services/supabase/uploadPfp.js";
 import { deletePfp } from "../../services/supabase/uploadPfp.js";
 import { v4 as uuidv4 } from "uuid";
@@ -17,7 +16,7 @@ const registerController = async (req, res) => {
         const uploaded = await uploadPfp(req.file.buffer, req.body.id);
         if (uploaded instanceof Error || !uploaded) {
             console.error("Error uploading profile picture:", uploaded);
-            res.status(500).json({ message: "ERROR_UPLOADING_PROFILE_PICTURE" });
+            res.status(500).json({ error: "ERROR_UPLOADING_PROFILE_PICTURE" });
             return;
         }
         const { pfpUrl } = uploaded;
@@ -37,17 +36,17 @@ const registerController = async (req, res) => {
         homeNumber: req.body.homeNumber,
         schoolName: req.body.schoolName,
         educationType: req.body.educationType,
-        educationYear: parseInt(req.body.educationYear, 10),
+        educationYear: req.body.educationYear,
         confessionFather: req.body.confessionFather,
-        liturgyDate: new Date(req.body.liturgyDate),
+        liturgyDate: req.body.liturgyDate,
         servantPrepYear: req.body.servantPrepYear,
         serviceType: req.body.serviceType,
     };
     try {
         const userData = await insertUser(destructuredBody);
         if (userData) {
-            const token = toJWT({ ...userData, pfpUrl: req.body.pfpUrl });
-            res.status(201).json({ message: "USER_REGISTERED", token });
+            //  const token = toJWT({ ...userData, pfpUrl: req.body.pfpUrl });
+            res.status(201).json({ message: "USER_REGISTERED" });
         }
     }
     catch (err) {
@@ -65,7 +64,7 @@ const registerController = async (req, res) => {
             });
             return;
         }
-        res.status(500).json({ message: "ERROR_REGISTERING_USER" });
+        res.status(500).json({ error: "ERROR_REGISTERING_USER" });
     }
 };
 export default registerController;

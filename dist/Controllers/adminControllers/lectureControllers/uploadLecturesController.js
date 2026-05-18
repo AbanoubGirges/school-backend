@@ -4,19 +4,19 @@ import { insertLecture } from "../../../repo/lecturesQueries.js";
 const uploadLecturesController = async (req, res) => {
     try {
         if (!req.file) {
-            res.status(400).json({ message: "NO_FILE_UPLOADED" });
+            res.status(400).json({ error: "NO_FILE_UPLOADED" });
             return;
         }
         const { title, subject, date, } = req.body;
         if (!title || !subject || !date) {
-            res.status(400).json({ message: "MISSING_REQUIRED_FIELDS" });
+            res.status(400).json({ error: "MISSING_REQUIRED_FIELDS" });
             return;
         }
         const lectureId = uuidv4();
         const result = await uploadLectures(req.file.buffer, req.file.mimetype, lectureId, subject.toUpperCase());
         if (result instanceof Error || !result) {
             console.error("Error uploading lecture:", result);
-            res.status(500).json({ message: "ERROR_UPLOADING_LECTURE" });
+            res.status(500).json({ error: "ERROR_UPLOADING_LECTURE" });
             return;
         }
         const dbResult = await insertLecture({
@@ -31,7 +31,7 @@ const uploadLecturesController = async (req, res) => {
     }
     catch (err) {
         console.error("Error uploading lecture:", err);
-        res.status(500).json({ message: "ERROR_UPLOADING_LECTURE" });
+        res.status(500).json({ error: "ERROR_UPLOADING_LECTURE" });
     }
 };
 export default uploadLecturesController;

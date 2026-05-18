@@ -1,5 +1,5 @@
 import express from "express";
-import { createAttendanceRecord } from "../../../repo/attendanceQueries.js";
+import { createAttendanceRecord, getAttendanceByDate } from "../../../repo/attendanceQueries.js";
 import { validationResult } from "express-validator";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Prisma } from "@prisma/client";
@@ -20,7 +20,7 @@ const createAttendanceController = async (
     }
     const today = new Date();
     const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const attendanceRecordExists = await createAttendanceRecord(id, todayDateOnly, status.toUpperCase(), note);
+    const attendanceRecordExists = await getAttendanceByDate(id, todayDateOnly);
     if (attendanceRecordExists) {
       res.status(409).json({ error: "ATTENDANCE_ALREADY_TAKEN_FOR_TODAY" });
       return;
