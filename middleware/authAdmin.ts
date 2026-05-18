@@ -14,7 +14,7 @@ const authAdmin = (req: express.Request, res: express.Response, next: express.Ne
       return;
     }
 
-    if (decoded.role !== "ADMIN"||decoded.role !== "SUDO") {
+    if (decoded.role !== "ADMIN"&&decoded.role !== "SUDO") {
       res.status(403).json({ error: "ACCESS_DENIED" });
       return;
     }
