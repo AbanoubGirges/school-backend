@@ -72,7 +72,7 @@ async function getAttendanceByUserId(userId: string): Promise<{ attendanceRecord
   return {attendanceRecords, count: count()};
 }
 const getAttendanceByDate = async (id: string, date: Date): Promise<Attendance|null> => {
-  const attendanceRecords = await prisma.attendance.findFirst({
+  const attendanceRecords = await prisma.attendance.findUnique({
     where: { id,date },
   });
   return attendanceRecords;

@@ -66,10 +66,11 @@ enum AttendanceStatus {
 model Attendance {
   id          String   @id @default(uuid())
   userId      String
-  date        DateTime @unique @default(now())
+  date        DateTime  @default(now())
   status      AttendanceStatus
   user        User     @relation(fields: [userId], references: [id])
   note     String?
+  @@unique([userId, date])
 }
 //lectures model
 model Lecture {
