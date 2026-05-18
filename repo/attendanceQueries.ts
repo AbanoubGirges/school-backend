@@ -74,7 +74,7 @@ async function getAttendanceByUserId(userId: string): Promise<{ attendanceRecord
 const getAttendanceByDate = async (id: string,date: Date 
 ): Promise<Attendance|null> => {
   const attendanceRecords = await prisma.attendance.findFirst({
-    where: {id},
+    where: {userId:id},
   });
   if (attendanceRecords?.date.getDate()===date.getDate()&&attendanceRecords?.date.getMonth()===date.getMonth()&&attendanceRecords?.date.getFullYear()===date.getFullYear()) 
     return attendanceRecords;
