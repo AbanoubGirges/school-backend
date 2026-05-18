@@ -71,10 +71,13 @@ async function getAttendanceByUserId(userId: string): Promise<{ attendanceRecord
 
   return {attendanceRecords, count: count()};
 }
-const getAttendanceByDate = async (id: string, date: Date): Promise<Attendance|null> => {
-  const attendanceRecords = await prisma.attendance.findUnique({
-    where: { userId_date: { userId: id, date } },
+const getAttendanceByDate = async (id: string,date: Date 
+): Promise<Attendance|null> => {
+  const attendanceRecords = await prisma.attendance.findFirst({
+    where: {id},
   });
-  return attendanceRecords;
+  if (attendanceRecords?.date.getDate()===date.getDate()&&attendanceRecords?.date.getMonth()===date.getMonth()&&attendanceRecords?.date.getFullYear()===date.getFullYear()) 
+    return attendanceRecords;
+  return null;
 };
 export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate };
