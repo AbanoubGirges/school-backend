@@ -16,7 +16,7 @@ async function createAttendanceRecord(
     case "ABSENT":
       statusEnum = AttendanceStatus.ABSENT;
       break;
-    case "EXECUSEDLATE":
+    case "EXCUSEDLATE":
       statusEnum = AttendanceStatus.EXCUSEDLATE;
       break;
     case "UNEXCUSEDLATE":
