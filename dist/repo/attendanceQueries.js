@@ -65,9 +65,11 @@ async function getAttendanceByUserId(userId) {
     return { attendanceRecords, count: count() };
 }
 const getAttendanceByDate = async (id, date) => {
-    const attendanceRecords = await prisma.attendance.findUnique({
-        where: { id, date },
+    const attendanceRecords = await prisma.attendance.findFirst({
+        where: { userId: id },
     });
-    return attendanceRecords;
+    if (attendanceRecords?.date.getDate() === date.getDate() && attendanceRecords?.date.getMonth() === date.getMonth() && attendanceRecords?.date.getFullYear() === date.getFullYear())
+        return attendanceRecords;
+    return null;
 };
 export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate };
