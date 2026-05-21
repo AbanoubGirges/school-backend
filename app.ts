@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const apiV1=express.Router();
 apiV1.use("/auth", authRouter);
-apiV1.use("/user", adminUserRouter);
+apiV1.use("/admin/user", adminUserRouter);
 apiV1.use("/user", userRouter);
 // app.use("/", );
 apiV1.use("/attendance/admin", adminAttendanceRouter);

@@ -16,7 +16,7 @@ const getAllUsersController = async (req: express.Request, res: express.Response
         }
     }catch(error){
         console.log("Error fetching users:", error);
-        res.status(500).json({message: "Error fetching users"});
+        res.status(500).json({error: "ERROR_FETCHING_USERS" });
     }
 }
 export default getAllUsersController;
