@@ -29,15 +29,13 @@ app.use((err: Error|multer.MulterError, req: express.Request, res: express.Respo
       error: err.message,
     });
   }
-
-  // custom fileFilter errors
-  if (err) {
-    return res.status(400).json({
-      error: err.message,
-    });
-  }
-
   next();
+});
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({
+    error: "Internal Server Error",
+  });
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
