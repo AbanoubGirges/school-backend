@@ -10,7 +10,7 @@ import getAllUsersController from "../Controllers/adminControllers/onUser/getAll
 const adminUserRouter = express.Router();
 adminUserRouter.patch("/:id/status",authAdmin,[body("status").isIn(["APPROVED", "REJECTED", "PENDING"])], updateStatusController);
 adminUserRouter.get("/pending", authAdmin, getPendingController);
+adminUserRouter.get("/students",authAdmin,getAllUsersController);
 adminUserRouter.get("/:id", authAdmin, fetchUserController);
 adminUserRouter.patch("/:id/role", authSUDO, [body("role").isIn(["SUDO", "ADMIN", "USER", "FATHER"])], updateRoleController);
-adminUserRouter.get("/students",authAdmin,getAllUsersController);
 export default adminUserRouter;
