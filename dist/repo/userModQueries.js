@@ -9,7 +9,7 @@ async function updateUserStatus(id, status) {
 async function fetchPendingUsers() {
     const pendingUsers = await prisma.user.findMany({
         where: { status: Status.PENDING },
-        select: { id: true, name: true },
+        select: { id: true, name: true, registerDate: true },
     });
     return pendingUsers;
 }

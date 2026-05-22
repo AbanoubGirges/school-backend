@@ -6,11 +6,11 @@ import { fetchUserController } from "../Controllers/adminControllers/onUser/fetc
 import { body } from "express-validator";
 import updateRoleController from "../Controllers/adminControllers/onUser/updateRoleController.js";
 import { authSUDO } from "../middleware/authSUDO.js";
-import { getAllUsers } from "../repo/getAllUsersQueries.js";
+import getAllUsersController from "../Controllers/adminControllers/onUser/getAllUsersController.js";
 const adminUserRouter = express.Router();
 adminUserRouter.patch("/:id/status", authAdmin, [body("status").isIn(["APPROVED", "REJECTED", "PENDING"])], updateStatusController);
 adminUserRouter.get("/pending", authAdmin, getPendingController);
+adminUserRouter.get("/students", authAdmin, getAllUsersController);
 adminUserRouter.get("/:id", authAdmin, fetchUserController);
 adminUserRouter.patch("/:id/role", authSUDO, [body("role").isIn(["SUDO", "ADMIN", "USER", "FATHER"])], updateRoleController);
-adminUserRouter.get("/students", authAdmin, getAllUsers);
 export default adminUserRouter;

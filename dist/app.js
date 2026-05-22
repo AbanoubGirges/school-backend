@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const apiV1 = express.Router();
 apiV1.use("/auth", authRouter);
-apiV1.use("/user", adminUserRouter);
+apiV1.use("/admin/user", adminUserRouter);
 apiV1.use("/user", userRouter);
 // app.use("/", );
 apiV1.use("/attendance/admin", adminAttendanceRouter);
@@ -29,13 +29,13 @@ app.use((err, req, res, next) => {
             error: err.message,
         });
     }
-    // custom fileFilter errors
-    if (err) {
-        return res.status(400).json({
-            error: err.message,
-        });
-    }
     next();
+});
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        error: "Internal Server Error",
+    });
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

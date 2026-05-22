@@ -72,4 +72,13 @@ const getAttendanceByDate = async (id, date) => {
         return attendanceRecords;
     return null;
 };
-export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate };
+const markAbsentForUsers = async (userIds) => {
+    const absentStatus = AttendanceStatus.ABSENT;
+    await prisma.attendance.createMany({
+        data: userIds.map((id) => ({
+            userId: id,
+            status: absentStatus,
+        })),
+    });
+};
+export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate, markAbsentForUsers };
