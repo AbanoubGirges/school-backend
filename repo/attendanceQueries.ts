@@ -5,8 +5,14 @@ async function createAttendanceRecord(
   userId: string,
   date: Date,
   status: string,
-  note: string | undefined
+  note: string | undefined,
 ): Promise<Attendance> {
+  const isUserExist = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  if (!isUserExist) {
+    throw new Error("USER_NOT_FOUND");
+  }
   let statusEnum: AttendanceStatus;
   status = status.toUpperCase();
   switch (status) {
@@ -35,7 +41,17 @@ async function createAttendanceRecord(
   });
   return attendanceRecord;
 }
-async function getAttendanceByUserId(userId: string): Promise<{ attendanceRecords: Attendance[]; count: { present: number; absent: number; excusedLate: number; unexcusedLate: number } }> {
+async function getAttendanceByUserId(
+  userId: string,
+): Promise<{
+  attendanceRecords: Attendance[];
+  count: {
+    present: number;
+    absent: number;
+    excusedLate: number;
+    unexcusedLate: number;
+  };
+}> {
   const isUserExist = await prisma.user.findUnique({
     where: { id: userId },
   });
@@ -66,19 +82,33 @@ async function getAttendanceByUserId(userId: string): Promise<{ attendanceRecord
           break;
       }
     });
-    return  { present, absent, excusedLate, unexcusedLate };
+    return { present, absent, excusedLate, unexcusedLate };
   };
 
-  return {attendanceRecords, count: count()};
+  return { attendanceRecords, count: count() };
 }
-const getAttendanceByDate = async (id: string,date: Date 
-): Promise<Attendance|null> => {
+const getAttendanceByDate = async (
+  id: string,
+  date: Date,
+): Promise<Attendance | null> => {
   const attendanceRecords = await prisma.attendance.findFirst({
-    where: {userId:id},
+    where: {
+      userId: id,
+      date: {
+        gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+        lte: new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          23,
+          59,
+          59,
+          999,
+        ),
+      },
+    },
   });
-  if (attendanceRecords?.date.getDate()===date.getDate()&&attendanceRecords?.date.getMonth()===date.getMonth()&&attendanceRecords?.date.getFullYear()===date.getFullYear()) 
-    return attendanceRecords;
-  return null;
+  return attendanceRecords;
 };
 const markAbsentForUsers = async (userIds: string[]) => {
   const absentStatus = AttendanceStatus.ABSENT;
@@ -89,4 +119,9 @@ const markAbsentForUsers = async (userIds: string[]) => {
     })),
   });
 };
-export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate, markAbsentForUsers };
+export {
+  createAttendanceRecord,
+  getAttendanceByUserId,
+  getAttendanceByDate,
+  markAbsentForUsers,
+};

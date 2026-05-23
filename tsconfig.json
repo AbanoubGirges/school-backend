@@ -13,6 +13,6 @@
     "noEmit": false,
     "allowJs": true
   },
-  "include": ["**/*.ts","types"],
+  "include": ["**/*.ts","types", "tests/attendanceTests.js"],
   "exclude": ["node_modules", "dist"]
 }

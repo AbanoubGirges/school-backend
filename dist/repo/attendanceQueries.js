@@ -1,6 +1,12 @@
 import { prisma } from "../config/prismaConnection.js";
 import { AttendanceStatus } from "@prisma/client";
 async function createAttendanceRecord(userId, date, status, note) {
+    const isUserExist = await prisma.user.findUnique({
+        where: { id: userId },
+    });
+    if (!isUserExist) {
+        throw new Error("USER_NOT_FOUND");
+    }
     let statusEnum;
     status = status.toUpperCase();
     switch (status) {
@@ -66,11 +72,15 @@ async function getAttendanceByUserId(userId) {
 }
 const getAttendanceByDate = async (id, date) => {
     const attendanceRecords = await prisma.attendance.findFirst({
-        where: { userId: id },
+        where: {
+            userId: id,
+            date: {
+                gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+                lte: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999),
+            },
+        },
     });
-    if (attendanceRecords?.date.getDate() === date.getDate() && attendanceRecords?.date.getMonth() === date.getMonth() && attendanceRecords?.date.getFullYear() === date.getFullYear())
-        return attendanceRecords;
-    return null;
+    return attendanceRecords;
 };
 const markAbsentForUsers = async (userIds) => {
     const absentStatus = AttendanceStatus.ABSENT;
@@ -81,4 +91,4 @@ const markAbsentForUsers = async (userIds) => {
         })),
     });
 };
-export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate, markAbsentForUsers };
+export { createAttendanceRecord, getAttendanceByUserId, getAttendanceByDate, markAbsentForUsers, };

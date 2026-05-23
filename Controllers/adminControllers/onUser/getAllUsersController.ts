@@ -7,7 +7,7 @@ const getAllUsersController = async (req: express.Request, res: express.Response
         if(isDidNotAttend){
             const usersDidNotAttend = await getUsersDidNotAttend();
             if(usersDidNotAttend.length === 0){
-                return res.status(404).json({message: "No users found who did not attend today"});
+                return res.status(404).json([]);
             }
             res.json(usersDidNotAttend);
         }else{
