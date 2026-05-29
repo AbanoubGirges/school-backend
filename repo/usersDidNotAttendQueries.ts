@@ -6,6 +6,7 @@ async function getUsersDidNotAttend(): Promise<{ id: string; name: string; serva
   endOfDay.setHours(23, 59, 59, 999);
   const usersDidNotAttend = await prisma.user.findMany({
     where: {
+      role:"USER",
       attendances: {
         none: {
           date: {
