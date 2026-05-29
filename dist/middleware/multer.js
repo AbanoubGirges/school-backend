@@ -1,33 +1,37 @@
 import multer from "multer";
+const allowedMimeTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/gif",
+    "image/webp",
+    "audio/mpeg",
+    "audio/mp4",
+    "audio/x-m4a",
+    "audio/wav",
+    "audio/ogg",
+    "video/mp4",
+    "video/quicktime",
+    "video/x-msvideo",
+    "video/x-ms-wmv",
+    "video/webm",
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/rtf",
+    "text/plain",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+];
 const multerInstance = multer({
     storage: multer.memoryStorage(),
     fileFilter: (req, file, cb) => {
-        const allowedMimeTypes = [
-            "image/png",
-            "image/jpeg",
-            "image/jpg",
-            "image/gif",
-            "audio/mpeg",
-            "audio/wav",
-            "audio/ogg",
-            "audio/m4a",
-            "audio/mp3",
-            "video/mp4",
-            "video/avi",
-            "video/mov",
-            "video/wmv",
-            "document/pdf",
-            "document/doc",
-            "document/docx",
-            "document/rtf",
-            "document/txt",
-            "document/pptx",
-        ];
+        console.log("Uploading:", file.originalname, "| MIME:", file.mimetype);
         if (allowedMimeTypes.includes(file.mimetype)) {
             cb(null, true);
         }
         else {
-            cb(new Error("INVALID_FILE_TYPE"));
+            console.log("Rejected:", file.mimetype);
+            cb(new Error(`INVALID_FILE_TYPE: ${file.mimetype}`));
         }
     },
 });
