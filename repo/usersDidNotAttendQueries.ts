@@ -1,4 +1,5 @@
 import { prisma } from "../config/prismaConnection.js";
+import { Role } from "@prisma/client";
 async function getUsersDidNotAttend(): Promise<{ id: string; name: string; servantPrepYear: string }[]> {
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
@@ -6,7 +7,7 @@ async function getUsersDidNotAttend(): Promise<{ id: string; name: string; serva
   endOfDay.setHours(23, 59, 59, 999);
   const usersDidNotAttend = await prisma.user.findMany({
     where: {
-      role:"USER",
+      role: Role.USER,
       attendances: {
         none: {
           date: {
