@@ -10,7 +10,7 @@ import { Role } from "@prisma/client";
  */
 const toJWT = (payload: IUser) => {
   return jwt.sign({ ...payload }, process.env.JWT_SECRET as string, {
-    expiresIn: "30d",
+    expiresIn: "1d",
   });
 };
 
