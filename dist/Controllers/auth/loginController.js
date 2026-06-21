@@ -10,7 +10,7 @@ const loginController = async (req, res) => {
         return;
     }
     try {
-        const result = await fetchUserByUsername(req.body.userName);
+        const result = await fetchUserByUsername(req.body.userName.trim());
         if (!result) {
             res.status(404).json({ error: "USER_NOT_FOUND" });
             return;

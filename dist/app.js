@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import lecturesRouter from "./routes/lectureRoutes.js";
 import multer from "multer";
 import userRouter from "./routes/userRouter.js";
+import spiritualNoteRouter from "./routes/spiritualNoteRouter.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -21,7 +22,11 @@ apiV1.use("/user", userRouter);
 apiV1.use("/attendance/admin", adminAttendanceRouter);
 apiV1.use("/attendance", userAttendanceRouter);
 apiV1.use("/lectures", lecturesRouter);
+//apiV2
+const apiV2 = express.Router();
+apiV2.use("/spiritual-note", spiritualNoteRouter);
 app.use("/api/v1", apiV1);
+app.use("/api/v2", apiV2);
 app.use((err, req, res, next) => {
     // multer-specific errors
     if (err instanceof multer.MulterError) {

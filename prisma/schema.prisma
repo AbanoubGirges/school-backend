@@ -10,7 +10,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   // @ts-ignore
-  url      = env("DATABASE_URL")
+  url      = env("DIRECT_URL")
 }
 
 // user model
@@ -54,6 +54,7 @@ model User {
   registerDate       DateTime @default(now())
   status             Status     @default(PENDING)
   attendances        Attendance[]
+  spiritualNotes      SpiritualNote[]
 }
 
 //attendance model
@@ -89,4 +90,20 @@ enum Subject {
   CHURCH_HISTORY
   RITUALS
   HYMNS
+}
+//spiritual notes model
+model SpiritualNote {
+  userId      String
+  submission   SpiritualNoteSubmission
+  date        DateTime  @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  @@id([userId, date, submission])
+}
+enum SpiritualNoteSubmission {
+  MORNINGPRAYER
+  NOONPRAYER
+  NIGHTPRAYER
+  LITURGY
+  BIBLE
+  CONFESSION
 }

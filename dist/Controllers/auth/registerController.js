@@ -50,7 +50,7 @@ const registerController = async (req, res) => {
         }
     }
     catch (err) {
-        const deleteResult = await deletePfp(req.body.id);
+        const deleteResult = await deletePfp(destructuredBody.id);
         if (deleteResult instanceof Error) {
             console.error("Error deleting profile picture after failed registration:", deleteResult);
         }
