@@ -18,7 +18,7 @@ export interface IUserDetails {
   address: string;
   whatsapp: string;
   phoneNumber: string;
-  homeNumber: string| null;
+  homeNumber: string | undefined | null;
   schoolName: string;
   educationType: string;
   educationYear: string;
