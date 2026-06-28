@@ -1,9 +1,12 @@
 import express from "express";
 import { getSubmissionsForUser } from "../../repo/spiritualNoteQueries.js"; 
+import { JwtPayload } from "jsonwebtoken";
 const getSubmissionsUser = async (req: express.Request, res: express.Response) => {
   try {
+    const {id,role}=req.user as JwtPayload
     let month = req.query.month as string;
-    const userId = req.params.userId as string;
+
+    const userId = role==='ADMIN'||role==='SUDO'?req.params.userId as string: id;
     if (!month) {
         month = new Date().getMonth().toString();
     }

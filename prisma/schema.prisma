@@ -55,6 +55,7 @@ model User {
   status             Status     @default(PENDING)
   attendances        Attendance[]
   spiritualNotes      SpiritualNote[]
+  pushNotifications   PushNotification[]
 }
 
 //attendance model
@@ -106,4 +107,14 @@ enum SpiritualNoteSubmission {
   LITURGY
   BIBLE
   CONFESSION
+}
+//notification model
+model PushNotification {
+  id        String @id @default(cuid())
+  userId    String
+  expoToken String @unique
+
+  user      User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
 }

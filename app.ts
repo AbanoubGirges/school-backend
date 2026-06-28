@@ -9,6 +9,8 @@ import lecturesRouter from "./routes/lectureRoutes.js";
 import multer from "multer";
 import userRouter from "./routes/userRouter.js";
 import spiritualNoteRouter from "./routes/spiritualNoteRouter.js";
+import {Expo} from "expo-server-sdk";
+import pushNotificationsRouter from "./routes/notificationsRouter.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -25,7 +27,7 @@ apiV1.use("/lectures",lecturesRouter)
 //apiV2
 const apiV2=express.Router();
 apiV2.use("/spiritual-note",spiritualNoteRouter );
-
+apiV2.use("/push-notifications",pushNotificationsRouter);
 app.use("/api/v1", apiV1);
 app.use("/api/v2", apiV2);
 app.use((err: Error|multer.MulterError, req: express.Request, res: express.Response, next: express.NextFunction) => {
