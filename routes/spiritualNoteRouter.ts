@@ -12,6 +12,9 @@ spiritualNoteRouter.post(
   authUser,
   [
     body("submission")
+      .isArray({ min: 1 })
+      .withMessage("submission must be a non-empty array"),
+    body("submission")
       .notEmpty()
       .isIn([
         "MORNINGPRAYER",

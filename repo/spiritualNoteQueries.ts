@@ -2,43 +2,43 @@ import { prisma } from "../config/prismaConnection.js";
 import { SpiritualNoteSubmission } from "@prisma/client";
 const postSpiritualNote = async (
   userId: string,
-  submission: string,
+  submission: string[],
   date: Date,
-) => {
-  let submissionEnum: SpiritualNoteSubmission;
-  submission = submission.toUpperCase();
-  switch (submission) {
-    case "MORNINGPRAYER":
-      submissionEnum = SpiritualNoteSubmission.MORNINGPRAYER;
-      break;
-    case "NOONPRAYER":
-      submissionEnum = SpiritualNoteSubmission.NOONPRAYER;
-      break;
-    case "NIGHTPRAYER":
-      submissionEnum = SpiritualNoteSubmission.NIGHTPRAYER;
-      break;
-    case "BIBLE":
-      submissionEnum = SpiritualNoteSubmission.BIBLE;
-      break;
-    case "LITURGY":
-      submissionEnum = SpiritualNoteSubmission.LITURGY;
-      break;
-    case "CONFESSION":
-      submissionEnum = SpiritualNoteSubmission.CONFESSION;
-      break;
-    default:
-      throw new Error("INVALID_SUBMISSION");
-  }
-  if (await checkNoteExists(userId, submissionEnum, date)) {
-    throw new Error("SPIRITUAL_NOTE_ALREADY_EXISTS");
-  }
-  return await prisma.spiritualNote.create({
-    data: {
-      userId,
-      submission: submissionEnum,
-      date,
+): Promise<Array<Awaited<ReturnType<typeof prisma.spiritualNote.create>>>> => {
+  let submissionEnum: SpiritualNoteSubmission[] = submission.map(
+    (submission) => {
+      switch (submission) {
+        case "MORNINGPRAYER":
+          return SpiritualNoteSubmission.MORNINGPRAYER;
+        case "NOONPRAYER":
+          return SpiritualNoteSubmission.NOONPRAYER;
+        case "NIGHTPRAYER":
+          return SpiritualNoteSubmission.NIGHTPRAYER;
+        case "BIBLE":
+          return SpiritualNoteSubmission.BIBLE;
+        case "LITURGY":
+          return SpiritualNoteSubmission.LITURGY;
+        case "CONFESSION":
+          return SpiritualNoteSubmission.CONFESSION;
+        default:
+          throw new Error("INVALID_SUBMISSION");
+      }
     },
-  });
+  );
+  const created: Array<Awaited<ReturnType<typeof prisma.spiritualNote.create>>> = [];
+  for (let i in submissionEnum) {
+    if (await checkNoteExists(userId, submissionEnum[i], date)) {
+      throw new Error("SPIRITUAL_NOTE_ALREADY_EXISTS");
+    }
+    created[i]=await prisma.spiritualNote.create({
+      data: {
+        userId,
+        submission: submissionEnum[i],
+        date,
+      },
+    });
+  }
+  return created;
 };
 const checkNoteExists = async (
   userId: string,
