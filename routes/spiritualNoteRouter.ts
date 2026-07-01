@@ -30,8 +30,8 @@ spiritualNoteRouter.post(
 );
 spiritualNoteRouter.get("/submissions", authUser, getSubmissionsUser);
 spiritualNoteRouter.post(
-  "/father",
-  authFather,
+  "/confession",
+  authAdmin,
   body("userId").notEmpty().isString().withMessage("User ID is required"),
   postNoteControllerFather,
 );
