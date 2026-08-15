@@ -8,4 +8,11 @@ return await prisma.pushNotification.create({
     }
 })
 }
-export{createPushToken};
+const getAdminPushTokens=async ():Promise<PushNotification[]>=>{
+    return await prisma.pushNotification.findMany({
+        where:{
+            user:{role:'ADMIN'}
+        }
+    })
+}
+export{createPushToken,getAdminPushTokens};

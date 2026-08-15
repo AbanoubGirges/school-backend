@@ -118,3 +118,12 @@ model PushNotification {
 
   createdAt DateTime @default(now())
 }
+//failed notification
+model FailedNotification {
+  id String @id @default(cuid())
+  expoPushToken String
+  title String
+  body String
+  data Json?
+  createdAt DateTime @default(now())
+}

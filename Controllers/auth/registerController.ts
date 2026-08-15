@@ -8,6 +8,7 @@ import { uploadPfp } from "../../services/supabase/uploadPfp.js";
 import { deletePfp } from "../../services/supabase/uploadPfp.js";
 import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
+import emitter from "../../services/events/eventInstance.js";
 const registerController = async (
   req: express.Request,
   res: express.Response,
@@ -54,7 +55,9 @@ const registerController = async (
     const userData: IUser | null = await insertUser(destructuredBody);
     if (userData) {
     //  const token = toJWT({ ...userData, pfpUrl: req.body.pfpUrl });
+      
       res.status(201).json({ message: "USER_REGISTERED" });
+      emitter.emit('userRegistered', userData.name);
     }
   } catch (err) {
     const deleteResult = await deletePfp(destructuredBody.id);
