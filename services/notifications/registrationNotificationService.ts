@@ -20,7 +20,7 @@ const registrationNotificationService = async (name:string)=>{
     for (const message of notificationMessages) {
         try {
             console.log('Sending notification:', message);
-            await axios.post(`${process.env.LOCAL_QUEUE_URL}`, message, {
+            await axios.post(`${process.env.QUEUE_URL}`, message, {
                 headers: {
                     'Authorization': `Bearer ${process.env.QUEUE_AUTH_TOKEN}`,
                     'Content-Type': 'application/json'
