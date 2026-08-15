@@ -62,19 +62,19 @@ const postNoteControllerFather = async (
     );
 
     if (!createdNote || createdNote.length === 0) {
-      return res.status(400).json({ error: "FAILED_TO_CREATE_SPIRITUAL_NOTE" });
+      return res.status(400).json({ error: "FAILED_TO_CREATE_CONFESSION" });
     }
 
-    res.status(201).json({ message: "SPIRITUAL_NOTE_CREATED" });
+    res.status(201).json({ message: "CONFESSION_CREATED" });
   } catch (err) {
     if (
       err instanceof Error &&
-      err.message === "SPIRITUAL_NOTE_ALREADY_EXISTS"
+      err.message === "CONFESSION_ALREADY_EXISTS"
     ) {
-      return res.status(409).json({ error: "SPIRITUAL_NOTE_ALREADY_EXISTS" });
+      return res.status(409).json({ error: "CONFESSION_ALREADY_EXISTS" });
     }
     console.error("Error creating spiritual note:", err);
-    res.status(500).json({ error: "ERROR_CREATING_SPIRITUAL_NOTE" });
+    res.status(500).json({ error: "ERROR_CREATING_CONFESSION" });
   }
 };
 export default postNoteController;
