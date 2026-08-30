@@ -34,7 +34,7 @@ const assignmentResultNotificationService = async (assignmentTitle: string) => {
       const { userId, ...message } = messageIncludingUserID;
       console.log("Sending notification:", message);
       await axios.post(
-        `${process.env.LOCAL_QUEUE_URL}`,
+        `${process.env.QUEUE_URL}`,
         { body: message },
         {
           headers: {
