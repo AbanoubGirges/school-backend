@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
 import type { IUser } from "../models/userData.js";
 import { Role } from "@prisma/client";
+import { deletePushToken } from "../repo/notificationQueries.js";
 
 /**
  *
@@ -14,15 +15,30 @@ const toJWT = (payload: IUser) => {
   });
 };
 
-const validateToken = (token: string) => {
+const validateToken = async (token: string) => {
   try {
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string,
     ) as JwtPayload;
-    return { isValid: true, decoded };
+
+    return {
+      isValid: true,
+      decoded,
+    };
   } catch (error) {
-    return { isValid: false, decoded: null };
+    if (error instanceof jwt.TokenExpiredError) {
+      const decoded = jwt.decode(token) as JwtPayload | null;
+
+      if (decoded?.id) {
+        await deletePushToken(decoded.id);
+      }
+    }
+
+    return {
+      isValid: false,
+      decoded: null,
+    };
   }
 };
 

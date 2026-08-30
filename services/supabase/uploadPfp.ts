@@ -26,7 +26,7 @@ const getPfpUrl = async (userId: string) => {
 const deletePfp = async (userId: string) => {
   const { data, error } = await supabase.storage
     .from("e3dadkhodam")
-    .remove([`/pfp/${userId}/profile.jpg`]);
+    .remove([`pfp/${userId}/profile.jpg`]);
   if (error) {
     return error;
   }

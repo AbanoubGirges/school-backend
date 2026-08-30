@@ -4,6 +4,7 @@ import { createAttendanceController } from '../Controllers/adminControllers/atte
 import getAttendanceController from '../Controllers/adminControllers/attendanceControllers/getAttendanceController.js';
 import { body } from "express-validator";
 import  markAbsentForUsersController  from '../Controllers/adminControllers/attendanceControllers/absentOthersController.js';
+import resetTermAttendanceController from '../Controllers/adminControllers/termControllers/resetTermController.js';
 const adminAttendanceRouter = express.Router();
 adminAttendanceRouter.use(authAdmin);
 // adminAttendanceRouter.get('/attendance', getAttendanceController);
@@ -12,5 +13,6 @@ adminAttendanceRouter.post('/', [
   body('status').isIn(['PRESENT', 'ABSENT','EXCUSEDLATE','UNEXCUSEDLATE']).withMessage('Status is required')
 ], createAttendanceController);
 adminAttendanceRouter.post("/bulk",markAbsentForUsersController );
+adminAttendanceRouter.post('/reset-term', [body('password').notEmpty().withMessage('Password is required')],resetTermAttendanceController);
 adminAttendanceRouter.get('/:id', getAttendanceController);
 export default adminAttendanceRouter;

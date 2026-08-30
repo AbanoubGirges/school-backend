@@ -1,0 +1,16 @@
+-- CreateEnum
+CREATE TYPE "ResultSubject" AS ENUM ('BIBLE', 'SERVICE_TOPICS', 'DOCTRINE', 'CHURCH_HISTORY', 'RITUALS', 'HYMNS', 'MEMORIZATION_TEXTS', 'ATTENDANCE_GRADE');
+
+-- CreateTable
+CREATE TABLE "Result" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "subject" "ResultSubject" NOT NULL,
+    "score" INTEGER NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Result_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Result" ADD CONSTRAINT "Result_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

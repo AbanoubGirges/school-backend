@@ -9,8 +9,12 @@ import lecturesRouter from "./routes/lectureRoutes.js";
 import multer from "multer";
 import userRouter from "./routes/userRouter.js";
 import spiritualNoteRouter from "./routes/spiritualNoteRouter.js";
-import {Expo} from "expo-server-sdk";
 import pushNotificationsRouter from "./routes/notificationsRouter.js";
+import adminResultsRouter from "./routes/adminResultsRouter.js";
+import sudoPrivilegesRouter from "./routes/sudoPrivilegesRouter.js";
+import resultsRouter from "./routes/resultsRouter.js";
+import adminAssignmentRouter from "./routes/adminAssignmentRouter.js";
+import assignmentRouter from "./routes/assignmentRouter.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -28,6 +32,11 @@ apiV1.use("/lectures",lecturesRouter)
 const apiV2=express.Router();
 apiV2.use("/spiritual-note",spiritualNoteRouter );
 apiV2.use("/push-notifications",pushNotificationsRouter);
+apiV2.use("/admin/results",adminResultsRouter);
+apiV2.use("/sudo",sudoPrivilegesRouter);
+apiV2.use("/results",resultsRouter);
+apiV2.use("/admin/assignment",adminAssignmentRouter);
+apiV2.use("/assignment",assignmentRouter);
 app.use("/api/v1", apiV1);
 app.use("/api/v2", apiV2);
 app.use((err: Error|multer.MulterError, req: express.Request, res: express.Response, next: express.NextFunction) => {

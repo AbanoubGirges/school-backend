@@ -1,6 +1,7 @@
 import { prisma } from "../config/prismaConnection.js";
 import { AttendanceStatus } from "@prisma/client";
 import type { Attendance } from "@prisma/client";
+import { ResultSubject } from "@prisma/client";
 async function createAttendanceRecord(
   userId: string,
   date: Date,
@@ -37,7 +38,16 @@ async function createAttendanceRecord(
       date,
       status: statusEnum,
       note,
+      termId: (
+        (await prisma.term.findFirst({
+          where: {
+            startDate: { lte: new Date() },
+            endDate: { gte: new Date() },
+          },
+        })) || { id: (() => { throw new Error('NO_ACTIVE_TERM'); })() }
+      ).id,
     },
+    
   });
   return attendanceRecord;
 }
@@ -112,13 +122,24 @@ const getAttendanceByDate = async (
 };
 const markAbsentForUsers = async (userIds: string[]) => {
   const absentStatus = AttendanceStatus.ABSENT;
+  const currentTerm = await prisma.term.findFirst({
+    where: {
+      startDate: { lte: new Date() },
+      endDate: { gte: new Date() },
+    },
+  });
+  if (!currentTerm) {
+    throw new Error("NO_ACTIVE_TERM");
+  }
   await prisma.attendance.createMany({
     data: userIds.map((id) => ({
       userId: id,
       status: absentStatus,
+      termId: currentTerm.id,
     })),
   });
 };
+
 export {
   createAttendanceRecord,
   getAttendanceByUserId,

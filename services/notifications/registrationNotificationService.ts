@@ -1,35 +1,60 @@
-import {getAdminPushTokens} from '../../repo/notificationQueries.js';
-import dotenv from 'dotenv';
-import axios from 'axios';
-import { createFailedNotification } from '../../repo/failedNotificationQueries.js';
+import { getAdminPushTokens } from "../../repo/notificationQueries.js";
+import dotenv from "dotenv";
+import axios from "axios";
+import { createFailedNotification } from "../../repo/failedNotificationQueries.js";
 dotenv.config();
 export default interface NotificationMessage {
   to: string;
   title: string;
   body: string;
   data?: Record<string, unknown>;
+  userId: string;
 }
 
-const registrationNotificationService = async (name:string)=>{
-    const adminPushTokens = await getAdminPushTokens();
-    const notificationMessages: NotificationMessage[] = adminPushTokens.map((token) => ({
-        to: token.expoToken,
-        title: 'New User Registration',
-        body: `A new user has registered: ${name}`
-    }));
-    for (const message of notificationMessages) {
-        try {
-            console.log('Sending notification:', message);
-            await axios.post(`${process.env.QUEUE_URL}`, message, {
-                headers: {
-                    'Authorization': `Bearer ${process.env.QUEUE_AUTH_TOKEN}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-        } catch (error) {
-            console.error('Error sending notification:', error);    
-            await createFailedNotification(message);
-        }
+const registrationNotificationService = async (name: string) => {
+  const adminPushTokens = await getAdminPushTokens();
+  const notificationMessages = adminPushTokens.flatMap((token) => {
+    const pushNotification = token.pushNotifications;
+
+    if (!pushNotification?.expoToken) {
+      return [];
     }
+
+    return [
+      {
+        userId: pushNotification.userId,
+        to: pushNotification.expoToken,
+        title: "A New User Registered",
+        body: `${name} has just registered`,
+      },
+    ];
+  });
+  for (const messageIncludingUserId of notificationMessages) {
+    const { userId, ...message } = messageIncludingUserId;
+    try {
+      console.log("Sending notification:", messageIncludingUserId);
+      const response = await axios.post(
+        `${process.env.QUEUE_URL}`,
+        { body: message },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.QUEUE_AUTH_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      console.log("Queue response:", response.status, response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Axios error:",
+          JSON.stringify(error.response?.data, null, 2),
+        );
+      } else {
+        console.error(`Error Sending Notification:${error}`);
+      }
+      await createFailedNotification(messageIncludingUserId);
+    }
+  }
 };
 export { registrationNotificationService };

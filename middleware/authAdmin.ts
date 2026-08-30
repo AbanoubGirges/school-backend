@@ -1,6 +1,6 @@
 import express from "express";
 import { validateToken } from "../utils/jwt.js";
-const authAdmin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const authAdmin = async(req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -8,7 +8,7 @@ const authAdmin = (req: express.Request, res: express.Response, next: express.Ne
       return;
     }
     const token = authHeader.split(" ")[1];
-    const { isValid, decoded } = validateToken(token);
+    const { isValid, decoded } = await validateToken(token);
     if (!isValid || !decoded) {
       res.status(401).json({ error: "INVALID_TOKEN" });
       return;

@@ -10,7 +10,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   // @ts-ignore
-  url      = env("DATABASE_URL")
+  url      = env("DIRECT_URL")
 }
 
 // user model
@@ -33,29 +33,32 @@ enum Status {
 }
 
 model User {
-  id                 String   @id @default(uuid())
-  userName           String   @unique
-  password           String
-  name               String
-  gender             Gender
-  birthdate          DateTime
-  address            String
-  role               Role
-  whatsapp           String
-  phoneNumber        String      @unique
-  homeNumber         String?
-  schoolName         String
-  educationType      String
-  educationYear      String
-  confessionFather   String
-  liturgyDate        String
-  servantPrepYear    String
-  serviceType        String
-  registerDate       DateTime @default(now())
-  status             Status     @default(PENDING)
-  attendances        Attendance[]
-  spiritualNotes      SpiritualNote[]
-  pushNotifications   PushNotification[]
+  id                String              @id @default(uuid())
+  userName          String              @unique
+  password          String
+  name              String
+  gender            Gender
+  birthdate         DateTime
+  address           String
+  role              Role
+  whatsapp          String
+  phoneNumber       String              @unique
+  homeNumber        String?
+  schoolName        String
+  educationType     String
+  educationYear     String
+  confessionFather  String
+  liturgyDate       String
+  servantPrepYear   String
+  serviceType       String
+  registerDate      DateTime            @default(now())
+  status            Status              @default(PENDING)
+  attendances       Attendance[]
+  spiritualNotes    SpiritualNote[]
+  pushNotifications PushNotification?
+  results           Result[]
+  attempts          AssignmentAttempt[]
+  allNotifications  AllNotifications[]
 }
 
 //attendance model
@@ -65,24 +68,30 @@ enum AttendanceStatus {
   EXCUSEDLATE
   UNEXCUSEDLATE
 }
+
 model Attendance {
-  id          String   @id @default(uuid())
-  userId      String
-  date        DateTime  @default(now())
-  status      AttendanceStatus
-  user        User     @relation(fields: [userId], references: [id])
-  note     String?
+  id     String           @id @default(uuid())
+  userId String
+  date   DateTime         @default(now())
+  status AttendanceStatus
+  user   User             @relation(fields: [userId], references: [id])
+  note   String?
+  term   Term             @relation(fields: [termId], references: [id])
+  termId String
+
   @@unique([userId, date])
 }
+
 //lectures model
 model Lecture {
-  id          String   @id @default(uuid())
-  title       String
-  type        String
-  date        DateTime
-  path         String @unique
-  subject     Subject
+  id      String   @id @default(uuid())
+  title   String
+  type    String
+  date    DateTime
+  path    String   @unique
+  subject Subject
 }
+
 //subjects enum
 enum Subject {
   BIBLE
@@ -92,14 +101,17 @@ enum Subject {
   RITUALS
   HYMNS
 }
+
 //spiritual notes model
 model SpiritualNote {
-  userId      String
-  submission   SpiritualNoteSubmission
-  date        DateTime  @default(now())
-  user        User     @relation(fields: [userId], references: [id])
+  userId     String
+  submission SpiritualNoteSubmission
+  date       DateTime                @default(now())
+  user       User                    @relation(fields: [userId], references: [id])
+
   @@id([userId, date, submission])
 }
+
 enum SpiritualNoteSubmission {
   MORNINGPRAYER
   NOONPRAYER
@@ -108,22 +120,119 @@ enum SpiritualNoteSubmission {
   BIBLE
   CONFESSION
 }
+
 //notification model
 model PushNotification {
   id        String @id @default(cuid())
-  userId    String
+  userId    String @unique
   expoToken String @unique
 
-  user      User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
 }
+
 //failed notification
 model FailedNotification {
-  id String @id @default(cuid())
+  id            String   @id @default(cuid())
   expoPushToken String
-  title String
-  body String
-  data Json?
+  title         String
+  body          String
+  data          Json?
+  createdAt     DateTime @default(now())
+}
+
+//results model
+model Result {
+  id      String        @id @default(cuid())
+  userId  String
+  subject ResultSubject
+  score   Float
+  date    DateTime      @default(now())
+  user    User          @relation(fields: [userId], references: [id])
+  term    Term          @relation(fields: [termId], references: [id])
+  termId  String
+}
+
+enum ResultSubject {
+  BIBLE
+  SERVICE_TOPICS
+  DOCTRINE
+  CHURCH_HISTORY
+  RITUALS
+  HYMNS
+  MEMORIZATION_TEXTS
+  ATTENDANCE_GRADE
+  SPIRITUAL_NOTE
+}
+
+model Term {
+  id          String       @id @default(cuid())
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  results     Result[]
+  attendances Attendance[]
+  assignments Assignment[]
+}
+
+//assignments model
+model Assignment {
+  id        String              @id @default(cuid())
+  title     String
+  subject   Subject
+  term      Term                @relation(fields: [termId], references: [id])
+  termId    String
+  questions Questions[]
+  attempts  AssignmentAttempt[]
+  endDate   DateTime
+}
+
+model Questions {
+  id             String           @id @default(cuid())
+  name           String
+  assignmentId   String
+  assignment     Assignment       @relation(fields: [assignmentId], references: [id])
+  answers        Answers[]
+  studentAnswers StudentAnswers[]
+}
+
+model Answers {
+  id             String           @id @default(cuid())
+  name           String
+  isCorrect      Boolean
+  question       Questions        @relation(fields: [questionId], references: [id])
+  questionId     String
+  studentAnswers StudentAnswers[]
+}
+
+model AssignmentAttempt {
+  id           String           @id @default(cuid())
+  userId       String
+  assignmentId String
+  user         User             @relation(fields: [userId], references: [id])
+  assignment   Assignment       @relation(fields: [assignmentId], references: [id])
+  answers      StudentAnswers[]
+}
+
+model StudentAnswers {
+  id         String            @id @default(cuid())
+  attemptId  String
+  questionId String
+  answerId   String
+  attempt    AssignmentAttempt @relation(fields: [attemptId], references: [id])
+  question   Questions         @relation(fields: [questionId], references: [id])
+  answer     Answers           @relation(fields: [answerId], references: [id])
+
+  @@unique([attemptId, questionId])
+}
+
+model AllNotifications {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  data      Json?
   createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
