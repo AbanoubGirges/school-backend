@@ -3,5 +3,6 @@ import { registrationNotificationService } from '../notifications/registrationNo
 import newAssignmentNotificationService from '../notifications/newAssignmentNotificationService.js';
 const emitter: EventEmitter = new EventEmitter();
 emitter.on('userRegistered', registrationNotificationService);
-emitter.on('newAssignment',newAssignmentNotificationService)
+emitter.on('newAssignment',newAssignmentNotificationService);
+emitter.on('newResult',);
 export default emitter ;

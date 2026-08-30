@@ -2,6 +2,7 @@ import express from 'express';
 import { fetchUserData } from '../../../repo/userDataQueries.js';
 import { validationResult } from 'express-validator';
 import { createResult } from '../../../repo/resultsQueries.js';
+import emitter from '../../../services/events/eventInstance.js';
 const createResultController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -14,6 +15,7 @@ const createResultController = async (req: express.Request, res: express.Respons
       return res.status(404).json({ message: 'USER_NOT_FOUND' });
     }
     await createResult(userId, subject);
+    emitter.emit('newResult',userId,subject);
     res.status(201).json({ message: 'RESULT_CREATED_SUCCESSFULLY' });
   }catch (error) {
     res.status(500).json({ error: 'FAILED_TO_CREATE_RESULT' });

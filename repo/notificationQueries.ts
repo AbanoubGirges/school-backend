@@ -44,6 +44,13 @@ const getUserPushTokens = async (): Promise<
     },
   });
 };
+const getOnePushToken=async(userId:string):Promise<PushNotification|null>=>{
+  return await prisma.pushNotification.findUnique({
+    where:{
+      userId:userId
+    }
+  });
+}
 const saveNotification =async(notification:{userId:string,title:string,body:string,data:null|object})=>{
   await prisma.allNotifications.create({
     data:{
@@ -55,4 +62,4 @@ const saveNotification =async(notification:{userId:string,title:string,body:stri
   });
 
 }
-export { createPushToken, getAdminPushTokens,getUserPushTokens,saveNotification,deletePushToken };
+export { createPushToken, getAdminPushTokens,getUserPushTokens,saveNotification,deletePushToken,getOnePushToken };
