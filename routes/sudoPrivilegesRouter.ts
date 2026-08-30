@@ -10,21 +10,10 @@ import createTermController from "../Controllers/adminControllers/termController
 const sudoPrivilegesRouter = express.Router();
 sudoPrivilegesRouter.use(authSUDO);
 sudoPrivilegesRouter.post(
-  "/term/reset",
+  "/term/end",
   [
     body("termName").notEmpty().withMessage("Term name is required"),
-    body("startDateStr")
-      .notEmpty()
-      .withMessage("Start date is required")
-      .isISO8601()
-      .toDate()
-      .withMessage("Start date must be a valid date"),
-    body("endDateStr")
-      .notEmpty()
-      .withMessage("End date is required")
-      .isISO8601()
-      .toDate()
-      .withMessage("End date must be a valid date"),
+    
   ],
   resetTermController,
 );
