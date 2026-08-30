@@ -25,6 +25,7 @@
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "connect-timeout": "^1.9.1",
+    "deepmerge-ts": "^8.0.2",
     "expo-server-sdk": "^6.1.0",
     "express": "^5.2.1",
     "express-validator": "^7.3.2",
@@ -50,9 +51,5 @@
     "swagger-jsdoc": "^6.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
-  },
-  "overrides": {
-    "deepmerge-ts": "^8.0.0"
   }
-
 }
