@@ -1,6 +1,7 @@
 import express from "express";
 import {validationResult} from "express-validator";
 import { createAssignment } from "../../../repo/assignmentQueries.js";
+import emitter from "../../../services/events/eventInstance.js";
 const createAssignmentController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -9,6 +10,7 @@ const createAssignmentController = async (req: express.Request, res: express.Res
   const { title, subject, endDate, questions } = req.body;
   try {
     const assignment = await createAssignment(title, subject, endDate, questions);
+    emitter.emit('newAssignment',assignment.subject);
     res.status(201).json({ message: "Assignment created successfully", assignment });
   } catch (error) {
     console.error(error);
