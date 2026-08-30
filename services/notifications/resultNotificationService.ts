@@ -8,22 +8,23 @@ import axios from "axios";
 import { createFailedNotification } from "../../repo/failedNotificationQueries.js";
 import dotenv from "dotenv";
 dotenv.config();
-const resultNotificationService = async (userId: string, subject: string) => {
-  switch (subject) {
+const resultNotificationService = async (userId: string, subjects: { subjectName: string; score: number }[]) => {
+  for (let subject of subjects){
+  switch (subject.subjectName) {
     case "BIBLE":
-      subject = "كتاب مقدس";
+      subject.subjectName = "كتاب مقدس";
       break;
     case "SERVICE_TOPICS":
-      subject = "موضوعات خدمة";
+      subject.subjectName = "موضوعات خدمة";
       break;
     case "DOCTRINE":
-      subject = "عقيدة";
+      subject.subjectName = "عقيدة";
       break;
     case "CHURCH_HISTORY":
-      subject = "تاريخ كنيسة";
+      subject.subjectName = "تاريخ كنيسة";
       break;
     case "RITUALS":
-      subject = "طقس";
+      subject.subjectName = "طقس";
       break;
     default:
       throw new Error(`INVALID_SUBJECT_NAME`);
@@ -35,7 +36,7 @@ const resultNotificationService = async (userId: string, subject: string) => {
   const notification={
     to:pushToken.expoToken,
     title:'ظهرت النتيحة!',
-    body:`خش شوف نتيجتك في مادةال${subject}`,
+    body:`خش شوف نتيجتك في مادةال${subject.subjectName}`,
   };
   try {
      await axios.post(
@@ -57,6 +58,6 @@ const resultNotificationService = async (userId: string, subject: string) => {
         console.error(`Error Sending Notification:${error}`);
       }
       await createFailedNotification({userId,...notification});
-  }
+  }}
 };
 export default resultNotificationService;
