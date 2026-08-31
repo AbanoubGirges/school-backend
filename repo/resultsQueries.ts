@@ -36,7 +36,7 @@ const createResult = async (
       case "MEMORIZATION_TEXTS":
         subjectEnum = ResultSubject.MEMORIZATION_TEXTS;
         break;
-      case "SPIRITUAL_NOTE":
+      case "SPIRITUAL_NOTES":
         subjectEnum = ResultSubject.SPIRITUAL_NOTE;
         break;
       default:

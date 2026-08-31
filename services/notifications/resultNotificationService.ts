@@ -26,6 +26,9 @@ const resultNotificationService = async (userId: string, subjects: { subjectName
     case "RITUALS":
       subject.subjectName = "طقس";
       break;
+    case "SPIRITUAL_NOTES":
+    subject.subjectName="نوتة روحية";
+    break;
 
   }
   const pushToken=await getOnePushToken(userId);
