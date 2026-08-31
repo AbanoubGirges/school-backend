@@ -9,7 +9,7 @@ adminResultsRouter.post(
   "/",
   [
     body("userId").notEmpty().withMessage("User ID is required"),
-    body("subject").isArray().withMessage("Subject is required"),
+    body("subject").isArray({min:1}).withMessage("Subject is required"),
     body("subject.*.subjectName")
       .isIn([
         "BIBLE",
