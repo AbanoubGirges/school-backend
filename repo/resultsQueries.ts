@@ -37,7 +37,7 @@ const createResult = async (
         subjectEnum = ResultSubject.MEMORIZATION_TEXTS;
         break;
       case "SPIRITUAL_NOTES":
-        subjectEnum = ResultSubject.SPIRITUAL_NOTE;
+        subjectEnum = ResultSubject.SPIRITUAL_NOTES;
         break;
       default:
         throw new Error(`INVALID_SUBJECT_NAME`);
