@@ -45,6 +45,6 @@ adminAssignmentRouter.post(
   ],
   createAssignmentController,
 );
-adminAssignmentRouter.post('/notify',[body('assignmentTitle').notEmpty().withMessage('Assignment title is required')],sendAssignmentResultController);
+adminAssignmentRouter.post('/notify',[body('assignmentTitle').notEmpty().withMessage('Assignment title is required'),body("assignmentId").notEmpty().withMessage('Assignment ID is required')],sendAssignmentResultController);
 
 export default adminAssignmentRouter;
