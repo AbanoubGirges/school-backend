@@ -26,12 +26,11 @@ const resultNotificationService = async (userId: string, subjects: { subjectName
     case "RITUALS":
       subject.subjectName = "طقس";
       break;
-    default:
-      throw new Error(`INVALID_SUBJECT_NAME`);
+
   }
   const pushToken=await getOnePushToken(userId);
   if(!pushToken){
-    throw new Error('');
+    throw new Error('Error:pushToken is null');
   }
   const notification={
     to:pushToken.expoToken,
