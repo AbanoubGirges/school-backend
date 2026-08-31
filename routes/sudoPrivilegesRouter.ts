@@ -11,9 +11,8 @@ const sudoPrivilegesRouter = express.Router();
 sudoPrivilegesRouter.use(authSUDO);
 sudoPrivilegesRouter.post(
   "/term/end",
-  [
-    body("termName").notEmpty().withMessage("Term name is required"),
-    
+  [body("termName").notEmpty().withMessage("Term name is required"),
+    body("password").notEmpty().withMessage("password is required")
   ],
   resetTermController,
 );
@@ -33,17 +32,24 @@ sudoPrivilegesRouter.post(
       .isISO8601()
       .toDate()
       .withMessage("Must be a valid date"),
+    body("password").notEmpty().withMessage("password is required"),
   ],
   createTermController,
 );
 sudoPrivilegesRouter.patch(
   "/admins/add",
-  [body("userId").notEmpty().withMessage("User ID is required")],
+  [
+    body("userId").notEmpty().withMessage("User ID is required"),
+    body("password").notEmpty().withMessage("password is required"),
+  ],
   createAdminController,
 );
 sudoPrivilegesRouter.delete(
   "/admins/remove",
-  [body("userId").notEmpty().withMessage("User ID is required")],
+  [
+    body("userId").notEmpty().withMessage("User ID is required"),
+    body("password").notEmpty().withMessage("password is required"),
+  ],
   removeAdminController,
 );
 export default sudoPrivilegesRouter;

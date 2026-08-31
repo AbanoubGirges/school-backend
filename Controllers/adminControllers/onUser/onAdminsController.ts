@@ -2,12 +2,25 @@ import express from 'express';
 import {validationResult} from 'express-validator';
 import {makeAdmin} from '../../../repo/editAdminsQueries.js';
 import {removeAdmin} from '../../../repo/editAdminsQueries.js';
+import { fetchUserByUsername } from '../../../repo/authQueries.js';
+import bcrypt from 'bcryptjs';
 const createAdminController= async (req:express.Request,res:express.Response)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
     const {userId}= req.body;
+    const user = await fetchUserByUsername(req.user?.userName);
+    if (!user) {
+      res.status(401).json({ error: "User not found" });
+      return;
+    }
+    const [_,password]=user;
+    const isPasswordValid = await bcrypt.compare(req.body.password, password);
+        if (!isPasswordValid) {
+          res.status(404).json({ error: "INVALID_CREDENTIALS" });
+          return;
+        }
     try {
         makeAdmin(userId);
         return res.status(200).json({ message: 'USER_MADE_ADMIN_SUCCESSFULLY' });
@@ -22,6 +35,17 @@ const removeAdminController = async (req:express.Request,res:express.Response)=>
         return res.status(400).json({ errors: errors.array() });
     }
     const {userId}= req.body;
+    const user = await fetchUserByUsername(req.user?.userName);
+        if (!user) {
+          res.status(401).json({ error: "User not found" });
+          return;
+        }
+        const [_,password]=user;
+        const isPasswordValid = await bcrypt.compare(req.body.password, password);
+            if (!isPasswordValid) {
+              res.status(404).json({ error: "INVALID_CREDENTIALS" });
+              return;
+            }
     try {
         // Assuming you have a function to remove admin privileges in your database
         removeAdmin(userId);
