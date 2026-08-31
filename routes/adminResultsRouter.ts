@@ -19,7 +19,7 @@ adminResultsRouter.post(
         "RITUALS",
         "HYMNS",
         "MEMORIZATION_TEXTS",
-        "SPIRITUAL_NOTE",
+        "SPIRITUAL_NOTES",
       ])
       .withMessage("Invalid subject"),
     body("subject.*.score")
