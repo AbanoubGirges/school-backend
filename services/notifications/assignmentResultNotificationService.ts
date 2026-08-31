@@ -8,7 +8,7 @@ import { createFailedNotification } from "../../repo/failedNotificationQueries.j
 import dotenv from "dotenv";
 import _ from "lodash";
 dotenv.config();
-const assignmentResultNotificationService = async (assignmentTitle: string) => {
+const assignmentResultNotificationService = async (assignmentTitle: string,assignmentId:string) => {
   console.log("SERVICE STARTED");
   console.log("Getting user tokens");
   const users = await getUserPushTokens();
@@ -26,6 +26,9 @@ const assignmentResultNotificationService = async (assignmentTitle: string) => {
         to: pushNotification.expoToken,
         title: "نتيجة الواجب ظهرت",
         body: `نتيجة واجب ال${assignmentTitle}ظهرت`,
+        data:{
+          url:`/api/v2/assignment/result/${assignmentId}`
+        }
       },
     ];
   });

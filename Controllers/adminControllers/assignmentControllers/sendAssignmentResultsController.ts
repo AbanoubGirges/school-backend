@@ -7,9 +7,10 @@ const sendAssignmentResultController=async(req:express.Request,res:express.Respo
         return res.status(400).json({ errors: errors.array() });
     }
     const assignmentTitle=req.body.assignmentTitle;
+    const assignmentId=req.body.assignmentId;
     try{
         console.log("A️⃣ CONTROLLER BEFORE SERVICE");
-    await assignmentResultNotificationService(assignmentTitle);
+    await assignmentResultNotificationService(assignmentTitle,assignmentId);
     console.log("B️⃣ CONTROLLER AFTER SERVICE");
     res.status(200).json({message:'notification sent successfully'});
     }catch(error){

@@ -62,7 +62,7 @@ const createAssignment = async (
         }
       ).id,
       questions: {
-        create: questions.map((question:AssignmentQuestion) => ({
+        create: questions.map((question: AssignmentQuestion) => ({
           name: question.name,
           answers: {
             create: question.answers.map((answer: AssignmentAnswer) => ({
@@ -97,30 +97,36 @@ const getAssignmentById = async (id: string) => {
         endDate: { gte: new Date() },
       },
     },
-    include:{
-        questions:true,
-        answers:{
-            select:{
-                id:true,
-                name:true,
-                questionId:true
-            }
-        }
-    }
+    include: {
+      questions: true,
+      answers: {
+        select: {
+          id: true,
+          name: true,
+          questionId: true,
+        },
+      },
+    },
   });
   return assignment;
 };
-const postAssignment=async (assignmentId:string,userId:string,answers:{questionId:string,answerId:string}[])=>{
-  const assignment=await prisma.assignment.findUnique({where:{id:assignmentId}});
-  if(!assignment){
-    throw new Error('ASSIGNMENT_DOES_NOT_EXIST');
-  }else if(new Date()>assignment.endDate){
+const postAssignment = async (
+  assignmentId: string,
+  userId: string,
+  answers: { questionId: string; answerId: string }[],
+) => {
+  const assignment = await prisma.assignment.findUnique({
+    where: { id: assignmentId },
+  });
+  if (!assignment) {
+    throw new Error("ASSIGNMENT_DOES_NOT_EXIST");
+  } else if (new Date() > assignment.endDate) {
     throw new DurationExceededError();
   }
   await prisma.assignmentAttempt.create({
-    data:{
-      assignmentId:assignmentId,
-      userId:userId,
+    data: {
+      assignmentId: assignmentId,
+      userId: userId,
       answers: {
         create: answers.map((answer) => ({
           questionId: answer.questionId,
@@ -131,8 +137,71 @@ const postAssignment=async (assignmentId:string,userId:string,answers:{questionI
     include: {
       answers: true,
     },
-    });
-  };
+  });
+};
+const assignmentResult = async (
+  userId: string,
+  assignmentId: string
+) => {
+  return await prisma.assignment.findFirst({
+    where: {
+      id: assignmentId,
+      term: {
+        startDate: { lte: new Date() },
+        endDate: { gte: new Date() },
+      },
+    },
+    select: {
+      id: true,
+      title: true,
 
+      questions: {
+        select: {
+          id: true,
+          name: true,
 
-export { createAssignment, getAllAssignments, getAssignmentById ,postAssignment};
+          answers: {
+            select: {
+              id: true,
+              name: true,
+              isCorrect: true,
+            },
+          },
+
+          studentAnswers: {
+            where: {
+              attempt: {
+                userId,
+              },
+            },
+            select: {
+              answerId: true,
+            },
+          },
+        },
+      },
+
+      attempts: {
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+          answers: {
+            select: {
+              questionId: true,
+              answerId: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+export {
+  createAssignment,
+  getAllAssignments,
+  getAssignmentById,
+  postAssignment,
+  assignmentResult,
+};

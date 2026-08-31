@@ -3,6 +3,7 @@ import { authUser } from "../middleware/authUser.js";
 import { getAllAssignments ,getAssignmentById} from "../repo/assignmentQueries.js";
 import {body} from 'express-validator';
 import postAssignmentController from "../Controllers/assignmentControllers/postAssignmentController.js";
+import getAssignmentResultController from "../Controllers/assignmentControllers/getAssignmentResult.js";
 const assignmentRouter = express.Router();
 assignmentRouter.use(authUser);
 assignmentRouter.get("/", async (req, res) => {
@@ -14,6 +15,7 @@ assignmentRouter.get("/", async (req, res) => {
     res.status(500).json({error:'FAILED_TO_GET_ASSIGNMENTS'})
   }
 });
+assignmentRouter.get('/result/:id',getAssignmentResultController);
 assignmentRouter.get('/:id',async (req,res)=>{
     const assignmentId=req.params.id;
     try{
