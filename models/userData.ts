@@ -26,4 +26,5 @@ export interface IUserDetails {
   liturgyDate: string;
   serviceType: string;
   pfpUrl?: string;
+  role?:string;
 }

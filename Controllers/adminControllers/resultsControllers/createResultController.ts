@@ -17,6 +17,8 @@ const createResultController = async (
     const user = await fetchUserData(userId);
     if (!user) {
       return res.status(404).json({ message: "USER_NOT_FOUND" });
+    }else if(user.role==='ADMIN'||user.role==='SUDO'){
+      return res.status(403).json({error:'CANNOT_ADD_RESULTS_TO_ADMINS'})
     }
     await createResult(userId, subject);
     emitter.emit("newResult", userId, subject);
