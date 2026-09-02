@@ -102,16 +102,22 @@ const getAssignmentById = async (id: string) => {
       title: true,
       termId: true,
       endDate: true,
-      questions: true,
-      answers: {
+      questions: {
         select: {
           id: true,
           name: true,
-          questionId: true,
+          answers: {
+            select: {
+              id: true,
+              name: true,
+              questionId: true,
+            },
+          },
         },
       },
     },
   });
+
   return assignment;
 };
 const postAssignment = async (
@@ -143,10 +149,7 @@ const postAssignment = async (
     },
   });
 };
-const assignmentResult = async (
-  userId: string,
-  assignmentId: string
-) => {
+const assignmentResult = async (userId: string, assignmentId: string) => {
   return await prisma.assignment.findFirst({
     where: {
       id: assignmentId,
