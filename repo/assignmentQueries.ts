@@ -98,6 +98,10 @@ const getAssignmentById = async (id: string) => {
       },
     },
     select: {
+      assignmentId: true,
+      title: true,
+      termId: true,
+      endDate: true,
       questions: true,
       answers: {
         select: {
