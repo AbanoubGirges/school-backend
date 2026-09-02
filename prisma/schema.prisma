@@ -59,6 +59,13 @@ model User {
   results           Result[]
   attempts          AssignmentAttempt[]
   allNotifications  AllNotifications[]
+  resetPassword      ResetPassword?
+}
+//needs reset password
+model ResetPassword {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 //attendance model

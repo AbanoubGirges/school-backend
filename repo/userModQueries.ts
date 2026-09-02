@@ -20,4 +20,22 @@ async function updateUserRole(id: string, role: string): Promise<void> {
     data: { role: role.toUpperCase() as Role },
   });
 }
-export { updateUserStatus, fetchPendingUsers, updateUserRole };
+async function fetchResetPasswordRequests(): Promise<{ id: string; name: string;}[]> {
+  const resetPasswordRequests = await prisma.resetPassword.findMany({
+    select: { id: true, user: { select: {id:true, name: true,} } },
+  });
+  return resetPasswordRequests.map((req) => ({
+    id: req.id,
+    name: req.user.name,
+  }));
+}
+async function updatePassword(requestId: string,newPassword: string): Promise<void> {
+  await prisma.user.update({
+    where: { id:requestId },
+    data: { password: newPassword },
+  });
+  await prisma.resetPassword.delete({
+    where: { id: requestId },
+  });
+}
+export { updateUserStatus, fetchPendingUsers, updateUserRole, fetchResetPasswordRequests, updatePassword };
