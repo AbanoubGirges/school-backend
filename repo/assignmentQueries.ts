@@ -98,7 +98,7 @@ const getAssignmentById = async (id: string) => {
       },
     },
     select: {
-      assignmentId: true,
+      id: true,
       title: true,
       termId: true,
       endDate: true,
