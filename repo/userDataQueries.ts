@@ -8,4 +8,15 @@ async function fetchUserData(id: string): Promise<Partial<Omit<IUserDetails, 'pa
   const {password, ...userData} = user || {};
   return userData;
 }
-export { fetchUserData };
+async function fetchUserNameAndPassword(id: string): Promise<[string, string] | null> {
+  const user = await prisma.user.findUnique({
+    where: { id },
+    select: {
+      userName: true,
+      password: true,
+    },
+  });
+  if (!user) return null;
+  return [user.userName, user.password];
+}
+export { fetchUserData, fetchUserNameAndPassword };

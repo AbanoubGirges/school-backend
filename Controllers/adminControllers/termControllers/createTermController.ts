@@ -7,13 +7,14 @@ const createTermController = async (
   req: express.Request,
   res: express.Response,
 ) => {
+  try{
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400).json({ errors: errors.array() });
     return;
   }
   const { termName, startDate, endDate} = req.body;
-  try {
+  
     // Assuming you have a function to create a term in your database
     const user = await fetchUserByUsername(req.user?.userName);
     if (!user) {

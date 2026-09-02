@@ -5,6 +5,7 @@ import {removeAdmin} from '../../../repo/editAdminsQueries.js';
 import { fetchUserByUsername } from '../../../repo/authQueries.js';
 import bcrypt from 'bcryptjs';
 const createAdminController= async (req:express.Request,res:express.Response)=>{
+    try{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -21,7 +22,7 @@ const createAdminController= async (req:express.Request,res:express.Response)=>{
           res.status(404).json({ error: "INVALID_CREDENTIALS" });
           return;
         }
-    try {
+
         makeAdmin(userId);
         return res.status(200).json({ message: 'USER_MADE_ADMIN_SUCCESSFULLY' });
     } catch (error) {
@@ -30,6 +31,7 @@ const createAdminController= async (req:express.Request,res:express.Response)=>{
     }
 }
 const removeAdminController = async (req:express.Request,res:express.Response)=>{
+    try{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -46,7 +48,7 @@ const removeAdminController = async (req:express.Request,res:express.Response)=>
               res.status(404).json({ error: "INVALID_CREDENTIALS" });
               return;
             }
-    try {
+    
         // Assuming you have a function to remove admin privileges in your database
         removeAdmin(userId);
         return res.status(200).json({ error: 'ADMIN_PRIVILEGES_REMOVED_SUCCESSFULLY' });
