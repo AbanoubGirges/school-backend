@@ -97,7 +97,7 @@ const getAssignmentById = async (id: string) => {
         endDate: { gte: new Date() },
       },
     },
-    include: {
+    select: {
       questions: true,
       answers: {
         select: {
