@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import { newTerm } from "../../../repo/termQueries.js";
 import { fetchUserByUsername } from "../../../repo/authQueries.js";
 import bcrypt from "bcryptjs";
+import { fetchUserNameAndPassword } from "../../../repo/userDataQueries.js";
 const createTermController = async (
   req: express.Request,
   res: express.Response,
@@ -16,7 +17,7 @@ const createTermController = async (
     const { termName, startDate, endDate } = req.body;
 
     // Assuming you have a function to create a term in your database
-    const user = await fetchUserByUsername(req.user?.userName);
+    const user = await fetchUserNameAndPassword(req.user?.id);
     if (!user) {
       res.status(401).json({ error: "User not found" });
       return;
