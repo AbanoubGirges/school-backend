@@ -76,6 +76,15 @@ const saveNotification = async (notification: {
     },
   });
 };
+const getAllNotifications = async (
+  userId: string,
+): Promise<Prisma.AllNotificationsGetPayload<{}>[]> => {
+  return await prisma.allNotifications.findMany({
+    where: {
+      userId,
+    },
+  });
+};
 export {
   createPushToken,
   getAdminPushTokens,
@@ -83,4 +92,5 @@ export {
   saveNotification,
   deletePushToken,
   getOnePushToken,
+  getAllNotifications,
 };
