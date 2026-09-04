@@ -1,5 +1,6 @@
 import { PushNotification } from "@prisma/client";
 import { prisma } from "../config/prismaConnection.js";
+import { Prisma } from "@prisma/client";
 const createPushToken = async (
   userId: string,
   expoToken: string,
@@ -11,19 +12,26 @@ const createPushToken = async (
     },
   });
 };
-const deletePushToken=async (
-  userId:string,
-)=>{
-  return await prisma.pushNotification.delete({
-    where:{
+const deletePushToken = async (userId: string) => {
+  const existingToken = await prisma.pushNotification.findUnique({
+    where: {
       userId,
-    }
+    },
   });
+  if (existingToken) {
+    return await prisma.pushNotification.delete({
+      where: {
+        userId,
+      },
+    });
+  }
 };
-const getAdminPushTokens = async (): Promise<{ id: string; pushNotifications: PushNotification | null }[]> => {
+const getAdminPushTokens = async (): Promise<
+  { id: string; pushNotifications: PushNotification | null }[]
+> => {
   return await prisma.user.findMany({
     where: {
-        role: { in: ["ADMIN", "SUDO"] },
+      role: { in: ["ADMIN", "SUDO"] },
     },
     select: {
       id: true,
@@ -44,22 +52,35 @@ const getUserPushTokens = async (): Promise<
     },
   });
 };
-const getOnePushToken=async(userId:string):Promise<PushNotification|null>=>{
+const getOnePushToken = async (
+  userId: string,
+): Promise<PushNotification | null> => {
   return await prisma.pushNotification.findUnique({
-    where:{
-      userId:userId
-    }
+    where: {
+      userId: userId,
+    },
   });
-}
-const saveNotification =async(notification:{userId:string,title:string,body:string,data:null|object})=>{
+};
+const saveNotification = async (notification: {
+  userId: string;
+  title: string;
+  body: string;
+  data: null | object;
+}) => {
   await prisma.allNotifications.create({
-    data:{
-      userId:notification.userId,
-      title:notification.title,
-      body:notification.body,
-      data:notification.data || undefined
-    }
+    data: {
+      userId: notification.userId,
+      title: notification.title,
+      body: notification.body,
+      data: notification.data || undefined,
+    },
   });
-
-}
-export { createPushToken, getAdminPushTokens,getUserPushTokens,saveNotification,deletePushToken,getOnePushToken };
+};
+export {
+  createPushToken,
+  getAdminPushTokens,
+  getUserPushTokens,
+  saveNotification,
+  deletePushToken,
+  getOnePushToken,
+};
