@@ -13,6 +13,5 @@ adminAttendanceRouter.post('/', [
   body('status').isIn(['PRESENT', 'ABSENT','EXCUSEDLATE','UNEXCUSEDLATE']).withMessage('Status is required')
 ], createAttendanceController);
 adminAttendanceRouter.post("/bulk",markAbsentForUsersController );
-adminAttendanceRouter.post('/reset-term', [body('password').notEmpty().withMessage('Password is required')],resetTermAttendanceController);
 adminAttendanceRouter.get('/:id', getAttendanceController);
 export default adminAttendanceRouter;
