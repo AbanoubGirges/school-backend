@@ -25,7 +25,6 @@ const resetTermController = async (req: express.Request, res: express.Response) 
       res.status(404).json({ error: "INVALID_CREDENTIALS" });
       return;
     }
-        
         await resetTerm();
         res.status(200).json({ message: "TERM_ATTENDANCE_RESET_SUCCESS" });
     } catch (err) {

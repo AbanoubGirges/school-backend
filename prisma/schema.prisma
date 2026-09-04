@@ -159,7 +159,7 @@ model Result {
   user    User          @relation(fields: [userId], references: [id])
   term    Term          @relation(fields: [termId], references: [id])
   termId  String
-  @@unique([subject,termId])
+  @@unique([subject,termId,userId])
 }
 
 enum ResultSubject {

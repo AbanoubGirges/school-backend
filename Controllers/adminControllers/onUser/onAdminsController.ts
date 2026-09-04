@@ -4,6 +4,7 @@ import {makeAdmin} from '../../../repo/editAdminsQueries.js';
 import {removeAdmin} from '../../../repo/editAdminsQueries.js';
 import { fetchUserByUsername } from '../../../repo/authQueries.js';
 import bcrypt from 'bcryptjs';
+import { fetchUserNameAndPassword } from '../../../repo/userDataQueries.js';
 const createAdminController= async (req:express.Request,res:express.Response)=>{
     try{
     const errors = validationResult(req);
@@ -11,9 +12,10 @@ const createAdminController= async (req:express.Request,res:express.Response)=>{
         return res.status(400).json({ errors: errors.array() });
     }
     const {userId}= req.body;
-    const user = await fetchUserByUsername(req.user?.userName);
+    const adminId:string=req.user?.id;
+    const user = await fetchUserNameAndPassword(adminId);
     if (!user) {
-      res.status(401).json({ error: "User not found" });
+      res.status(401).json({ error: "USER_NOT_FOUND" });
       return;
     }
     const [_,password]=user;
