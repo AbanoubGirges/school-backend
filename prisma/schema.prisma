@@ -177,8 +177,8 @@ enum ResultSubject {
 model Term {
   id          String       @id @default(cuid())
   name        String
-  startDate   DateTime
-  endDate     DateTime
+  startDate   DateTime    @unique
+  endDate     DateTime    @unique
   results     Result[]
   attendances Attendance[]
   assignments Assignment[]
