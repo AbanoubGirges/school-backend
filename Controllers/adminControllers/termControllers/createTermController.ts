@@ -30,6 +30,7 @@ const createTermController = async (
     const term = await newTerm(termName, startDate, endDate);
     res.status(201).json(term);
   } catch (error) {
+    console.log('Error creating term',error)
     res.status(500).json({ error: "Failed to create term" });
   }
 };
