@@ -156,14 +156,14 @@ model WebPushSubscription {
 
 //failed notification
 model FailedNotification {
-  id            String   @id @default(cuid())
-  expoPushToken String
-  title         String
-  body          String
-  data          Json?
-  createdAt     DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String
+  title     String
+  body      String
+  data      Json?
+  createdAt DateTime @default(now())
 }
-
 //results model
 model Result {
   id      String        @id @default(cuid())

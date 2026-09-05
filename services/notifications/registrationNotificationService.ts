@@ -39,6 +39,7 @@ const registrationNotificationService = async (name: string) => {
 
     return [
       {
+        type: "expo" as const,
         userId: pushNotification.userId,
         to: pushNotification.expoToken,
         title: "A New User Registered",
