@@ -10,7 +10,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   // @ts-ignore
-  url      = env("DIRECT_URL")
+  url      = env("DATABASE_URL")
 }
 
 // user model
