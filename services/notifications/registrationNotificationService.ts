@@ -3,14 +3,31 @@ import dotenv from "dotenv";
 import axios from "axios";
 import { createFailedNotification } from "../../repo/failedNotificationQueries.js";
 dotenv.config();
-export default interface NotificationMessage {
-  to: string;
-  title: string;
-  body: string;
-  data?: Record<string, unknown>;
-  userId: string;
+export interface WebPushSubscription {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
 }
 
+export type NotificationMessage =
+  | {
+      type: "expo";
+      to: string;
+      title: string;
+      body: string;
+      data?: Record<string, unknown>;
+      userId: string;
+    }
+  | {
+      type: "web";
+      subscription: WebPushSubscription;
+      title: string;
+      body: string;
+      data?: Record<string, unknown>;
+      userId: string;
+    };
 const registrationNotificationService = async (name: string) => {
   const adminPushTokens = await getAdminPushTokens();
   const notificationMessages = adminPushTokens.flatMap((token) => {

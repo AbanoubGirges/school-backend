@@ -5,6 +5,7 @@ import createPushTokenController from "../Controllers/adminControllers/notificat
 import { createWebPushSubscription, deletePushToken } from "../repo/notificationQueries.js";
 import { getAllNotifications } from "../repo/notificationQueries.js";
 import dotenv from "dotenv";
+import { deleteWebPushSubscription } from "../repo/notificationQueries.js";
 dotenv.config();
 const pushNotificationsRouter = express.Router();
 pushNotificationsRouter.get('/web/vapid-public-key', (req: express.Request, res: express.Response) => {
@@ -35,6 +36,7 @@ pushNotificationsRouter.delete(
     const userId = req.user?.id;
     try {
       await deletePushToken(userId);
+      await deleteWebPushSubscription(userId); 
       res.status(200).json({ message: "token deleted successfully" });
     } catch (error) {
       console.error(`Failed to delete push token: ${error}`);

@@ -82,10 +82,32 @@ const getUserPushTokens = async (): Promise<
     },
   });
 };
+const getUserWebPushSubscriptions = async (): Promise<
+  { id: string; webPushSubscriptions: WebPushSubscription[] }[]
+> => {
+  return await prisma.user.findMany({
+    where: {
+      role: "USER",
+    },
+    select: {
+      id: true,
+      webPushSubscriptions: true,
+    },
+  });
+};
 const getOnePushToken = async (
   userId: string,
 ): Promise<PushNotification | null> => {
   return await prisma.pushNotification.findUnique({
+    where: {
+      userId: userId,
+    },
+  });
+};
+const getOneWebPushSubscription = async (
+  userId: string,
+): Promise<WebPushSubscription | null> => {
+  return await prisma.webPushSubscription.findFirst({
     where: {
       userId: userId,
     },
@@ -125,4 +147,6 @@ export {
   getAllNotifications,
   createWebPushSubscription,
   deleteWebPushSubscription,
+  getUserWebPushSubscriptions,
+  getOneWebPushSubscription,
 };

@@ -32,7 +32,7 @@ const createTermController = async (
     res.status(201).json(term);
   } catch (error) {
     console.error("Error creating term:", error);
-    res.status(500).json({ error: "Failed to create term" });
+    res.status(500).json({ error: "FAILED_TO_CREATE_TERM" });
   }
 };
 export default createTermController;
