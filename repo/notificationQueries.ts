@@ -1,6 +1,7 @@
 import { PushNotification } from "@prisma/client";
 import { prisma } from "../config/prismaConnection.js";
 import { Prisma } from "@prisma/client";
+import { WebPushSubscription } from "@prisma/client";
 const createPushToken = async (
   userId: string,
   expoToken: string,
@@ -11,6 +12,35 @@ const createPushToken = async (
       expoToken,
     },
   });
+};
+const createWebPushSubscription = async (
+  userId: string,
+  endpoint: string,
+  p256dh: string,
+  auth: string,
+) => {
+  return await prisma.webPushSubscription.create({
+    data: {
+      userId,
+      endpoint,
+      p256dh,
+      auth,
+    },
+  });
+};
+const deleteWebPushSubscription = async (userId: string) => {
+  const existingSubscription = await prisma.webPushSubscription.findFirst({
+    where: {
+      userId,
+    },
+  });
+  if (existingSubscription) {
+    return await prisma.webPushSubscription.delete({
+      where: {
+        id: existingSubscription.id,
+      },
+    });
+  }
 };
 const deletePushToken = async (userId: string) => {
   const existingToken = await prisma.pushNotification.findUnique({
@@ -93,4 +123,6 @@ export {
   deletePushToken,
   getOnePushToken,
   getAllNotifications,
+  createWebPushSubscription,
+  deleteWebPushSubscription,
 };

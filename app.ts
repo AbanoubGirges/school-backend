@@ -15,7 +15,13 @@ import sudoPrivilegesRouter from "./routes/sudoPrivilegesRouter.js";
 import resultsRouter from "./routes/resultsRouter.js";
 import adminAssignmentRouter from "./routes/adminAssignmentRouter.js";
 import assignmentRouter from "./routes/assignmentRouter.js";
+import webpush from "web-push";
 dotenv.config();
+webpush.setVapidDetails(
+  process.env.VAPID_EMAIL!,
+  process.env.PUBLIC_VAPID_KEY!,
+  process.env.PRIVATE_VAPID_KEY!
+);
 const app = express();
 app.use(cors());
 app.use(express.json());

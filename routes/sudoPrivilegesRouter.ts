@@ -12,7 +12,7 @@ sudoPrivilegesRouter.use(authSUDO);
 sudoPrivilegesRouter.post(
   "/term/end",
   
-  [body("termName").notEmpty().withMessage("Term name is required"),
+  [
     body("password").notEmpty().withMessage("password is required")
   ],
   resetTermController,

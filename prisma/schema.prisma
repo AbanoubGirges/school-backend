@@ -33,39 +33,41 @@ enum Status {
 }
 
 model User {
-  id                String              @id @default(uuid())
-  userName          String              @unique
-  password          String
-  name              String
-  gender            Gender
-  birthdate         DateTime
-  address           String
-  role              Role
-  whatsapp          String
-  phoneNumber       String              @unique
-  homeNumber        String?
-  schoolName        String
-  educationType     String
-  educationYear     String
-  confessionFather  String
-  liturgyDate       String
-  servantPrepYear   String
-  serviceType       String
-  registerDate      DateTime            @default(now())
-  status            Status              @default(PENDING)
-  attendances       Attendance[]
-  spiritualNotes    SpiritualNote[]
-  pushNotifications PushNotification?
-  results           Result[]
-  attempts          AssignmentAttempt[]
-  allNotifications  AllNotifications[]
-  resetPassword      ResetPassword?
+  id                   String                @id @default(uuid())
+  userName             String                @unique
+  password             String
+  name                 String
+  gender               Gender
+  birthdate            DateTime
+  address              String
+  role                 Role
+  whatsapp             String
+  phoneNumber          String                @unique
+  homeNumber           String?
+  schoolName           String
+  educationType        String
+  educationYear        String
+  confessionFather     String
+  liturgyDate          String
+  servantPrepYear      String
+  serviceType          String
+  registerDate         DateTime              @default(now())
+  status               Status                @default(PENDING)
+  attendances          Attendance[]
+  spiritualNotes       SpiritualNote[]
+  pushNotifications    PushNotification?
+  results              Result[]
+  attempts             AssignmentAttempt[]
+  allNotifications     AllNotifications[]
+  resetPassword        ResetPassword?
+  webPushSubscriptions WebPushSubscription[]
 }
+
 //needs reset password
 model ResetPassword {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 //attendance model
@@ -139,6 +141,19 @@ model PushNotification {
   createdAt DateTime @default(now())
 }
 
+model WebPushSubscription {
+  id       String @id @default(cuid())
+  endpoint String @unique
+  p256dh   String
+  auth     String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 //failed notification
 model FailedNotification {
   id            String   @id @default(cuid())
@@ -159,7 +174,8 @@ model Result {
   user    User          @relation(fields: [userId], references: [id])
   term    Term          @relation(fields: [termId], references: [id])
   termId  String
-  @@unique([subject,termId,userId])
+
+  @@unique([subject, termId, userId])
 }
 
 enum ResultSubject {
@@ -177,8 +193,8 @@ enum ResultSubject {
 model Term {
   id          String       @id @default(cuid())
   name        String
-  startDate   DateTime    @unique
-  endDate     DateTime    @unique
+  startDate   DateTime     @unique
+  endDate     DateTime     @unique
   results     Result[]
   attendances Attendance[]
   assignments Assignment[]

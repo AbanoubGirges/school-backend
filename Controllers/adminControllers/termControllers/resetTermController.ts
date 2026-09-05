@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import {  fetchUserNameAndPassword } from "../../../repo/userDataQueries.js";
 import { resetTerm } from "../../../repo/termQueries.js";
+import NoActiveTermError from "../../../utils/NoActiveTermError.js";
 const resetTermController = async (req: express.Request, res: express.Response) => {
   try{
     console.log("Reset Term Controller Invoked");
@@ -28,6 +29,9 @@ const resetTermController = async (req: express.Request, res: express.Response) 
         await resetTerm();
         res.status(200).json({ message: "TERM_ATTENDANCE_RESET_SUCCESS" });
     } catch (err) {
+      if(err instanceof NoActiveTermError){
+        return res.status(400).json({ error: "NO_ACTIVE_TERM" });
+      }
       console.error("Error resetting term attendance:", err);
       res.status(500).json({ error: "ERROR_RESETTING_TERM_ATTENDANCE" });
     }

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
 import type { IUser } from "../models/userData.js";
 import { Role } from "@prisma/client";
-import { deletePushToken } from "../repo/notificationQueries.js";
+import { deletePushToken, deleteWebPushSubscription } from "../repo/notificationQueries.js";
 
 /**
  *
@@ -32,6 +32,7 @@ const validateToken = async (token: string) => {
 
       if (decoded?.id) {
         await deletePushToken(decoded.id);
+        await deleteWebPushSubscription(decoded.id);
       }
     }
 

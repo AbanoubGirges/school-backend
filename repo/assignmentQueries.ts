@@ -1,6 +1,7 @@
 import { prisma } from "../config/prismaConnection.js";
 import { Subject } from "@prisma/client";
 import DurationExceededError from "../utils/DurationExceededError.js";
+import NoActiveTermError from "../utils/NoActiveTermError.js";
 interface AssignmentAnswer {
   text: string;
   isCorrect: boolean;
@@ -57,7 +58,7 @@ const createAssignment = async (
           },
         })) || {
           id: (() => {
-            throw new Error("NO_ACTIVE_TERM");
+            throw new NoActiveTermError("NO_ACTIVE_TERM");
           })(),
         }
       ).id,
@@ -120,6 +121,7 @@ const getAssignmentById = async (id: string) => {
 
   return assignment;
 };
+export default class AssignmentNotFoundError extends Error {}
 const postAssignment = async (
   assignmentId: string,
   userId: string,
@@ -129,7 +131,7 @@ const postAssignment = async (
     where: { id: assignmentId },
   });
   if (!assignment) {
-    throw new Error("ASSIGNMENT_DOES_NOT_EXIST");
+    throw new AssignmentNotFoundError("ASSIGNMENT_DOES_NOT_EXIST");
   } else if (new Date() > assignment.endDate) {
     throw new DurationExceededError();
   }

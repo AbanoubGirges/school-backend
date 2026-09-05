@@ -1,6 +1,7 @@
 import { prisma } from "../config/prismaConnection.js";
 import { AttendanceStatus } from "@prisma/client";
 import { ResultSubject } from "@prisma/client";
+import NoActiveTermError from "../utils/NoActiveTermError.js";
 const resetTerm = async () => {
   const currentTerm = await prisma.term.findFirst({
     where: {
@@ -9,7 +10,7 @@ const resetTerm = async () => {
     },
   });
   if (!currentTerm) {
-    throw new Error("NO_ACTIVE_TERM");
+    throw new NoActiveTermError("NO_ACTIVE_TERM");
   }
 
   const result=await prisma.attendance.groupBy({

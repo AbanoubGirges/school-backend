@@ -2,6 +2,7 @@ import express from "express";
 import {validationResult} from "express-validator";
 import { createAssignment } from "../../../repo/assignmentQueries.js";
 import emitter from "../../../services/events/eventInstance.js";
+import NoActiveTermError from "../../../utils/NoActiveTermError.js";
 const createAssignmentController = async (req: express.Request, res: express.Response) => {
   const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -13,6 +14,9 @@ const createAssignmentController = async (req: express.Request, res: express.Res
     emitter.emit('newAssignment',assignment.subject);
     res.status(201).json({ message: "Assignment created successfully", assignment });
   } catch (error) {
+    if (error instanceof NoActiveTermError) {
+      return res.status(400).json({ error: "NO_ACTIVE_TERM" });
+    }
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }

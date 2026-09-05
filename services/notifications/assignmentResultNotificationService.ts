@@ -57,5 +57,7 @@ const assignmentResultNotificationService = async (assignmentTitle: string,assig
       await createFailedNotification(messageIncludingUserID);
     }
   }
+  
+  // const webNotificationMessages
 };
 export default assignmentResultNotificationService;
