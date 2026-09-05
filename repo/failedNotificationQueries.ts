@@ -13,7 +13,7 @@ const createFailedNotification = async (
 
   return await prisma.failedNotification.create({
     data: {
-      expoPushToken: failedNotification.to,
+      type: failedNotification.to,
       title: failedNotification.title,
       body: failedNotification.body,
       data: failedNotification.data
