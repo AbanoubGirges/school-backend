@@ -1,7 +1,7 @@
 import express from 'express';
 import { assignmentResult, getAssignmentById } from '../../repo/assignmentQueries.js';
 const getAssignmentResultController=async(req:express.Request,res:express.Response)=>{
-    const userId =req.user?.id;
+    const userId =req.user?.role==='ADMIN'||req.user?.role==='SUDO' ?  req.params.userId:req.user?.id;
     const assignmentId:string=req.params.id as string;
     try{
         const endDate=(await getAssignmentById(assignmentId))?.endDate;

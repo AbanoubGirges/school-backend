@@ -3,6 +3,7 @@ import authAdmin from "../middleware/authAdmin.js";
 import { body } from "express-validator";
 import createAssignmentController from "../Controllers/adminControllers/assignmentControllers/createAssignmentController.js";
 import sendAssignmentResultController from "../Controllers/adminControllers/assignmentControllers/sendAssignmentResultsController.js";
+import getAssignmentResultController from "../Controllers/assignmentControllers/getAssignmentResult.js";
 const adminAssignmentRouter = express.Router();
 adminAssignmentRouter.use(authAdmin);
 adminAssignmentRouter.post(
@@ -46,5 +47,5 @@ adminAssignmentRouter.post(
   createAssignmentController,
 );
 adminAssignmentRouter.post('/notify',[body('assignmentTitle').notEmpty().withMessage('Assignment title is required'),body("assignmentId").notEmpty().withMessage('Assignment ID is required')],sendAssignmentResultController);
-
+adminAssignmentRouter.get('/:id/:userId',getAssignmentResultController);
 export default adminAssignmentRouter;
